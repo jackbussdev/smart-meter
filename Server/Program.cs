@@ -1,2 +1,10 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using Server;
+
+internal class Program
+{
+    private static async Task Main(string[] args)
+    {
+        ServerStartup server = new();
+        await server.StartServer();
+    }
+}
