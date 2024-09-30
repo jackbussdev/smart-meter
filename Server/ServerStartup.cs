@@ -9,7 +9,7 @@ namespace Server;
 
 internal class ServerStartup
 {
-    public void StartServer()
+    public async Task StartServer()
     {
         Console.WriteLine("Starting Server...");
 
