@@ -23,7 +23,7 @@ namespace Server.UnitTests.Services
         }
 
         [Fact]
-        public void FileService_Should_ErrorOnMissing_FileRepository_ConstructorParaneter()
+        public void File_Service_Should_Error_On_Missing_File_Repository_Constructor_Paraneter()
         {
             var expectedError = new ArgumentNullException("fileRepository");
 
@@ -33,7 +33,7 @@ namespace Server.UnitTests.Services
         }
 
         [Fact]
-        public async Task WriteDataAsync_ShouldCallFileRepository()
+        public async Task Write_Data_Async_Should_Call_File_Repository()
         {
             // Arrange
             var fileService = new FileService(_clientData.Id, _fileRepositoryMock.Object);
@@ -43,6 +43,25 @@ namespace Server.UnitTests.Services
 
             // Assert
             _fileRepositoryMock.Verify(x => x.WriteDataAsync(It.IsAny<string>(), It.IsAny<ClientDataModel>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task Read_Data_Async_Should_Call_File_Repository()
+        {
+            // Arrange
+            var expectedData = new List<ClientDataModel>();
+            string fileName = "testFile.json";
+            var fileService = new FileService(_clientData.Id, _fileRepositoryMock.Object);
+
+            _fileRepositoryMock.Setup(x => x.ReadDataAsync(fileName))
+                .ReturnsAsync(expectedData);
+
+            // Act
+            var dataFromFile = await fileService.ReadDataAsync(fileName);
+
+            // Assert 
+            dataFromFile.Should().BeEquivalentTo(expectedData, because: "The data returned from ReadDataAsync should be a list of type ClientDataModel");
+            _fileRepositoryMock.Verify(x => x.ReadDataAsync(It.IsAny<string>()), Times.Once);
         }
 
         public void Dispose()
