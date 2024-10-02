@@ -20,7 +20,7 @@ namespace Server.Controller.Authentication
                 new(ClaimTypes.Role, "Meter")
             };
 
-            SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes("X"));
+            SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes("X")); // insert key here
 
             SigningCredentials creds = new(key, SecurityAlgorithms.HmacSha512Signature);
 
