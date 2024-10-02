@@ -16,15 +16,15 @@ internal class ServerStartup
         using (var poller = new NetMQPoller())
         {
 
-            using (var server = new ResponseSocket())
-            {
-                server.ReceiveReady += Server_ReceiveReady;
-                poller.Add(server);
-                poller.RunAsync();
-                server.Bind("tcp://*:5556");
+            using var server = new ResponseSocket());
 
-                Console.ReadLine();
-            }
+            server.ReceiveReady += Server_ReceiveReady;
+            poller.Add(server);
+            poller.RunAsync();
+            server.Bind("tcp://*:5556");
+
+            Console.ReadLine();
+
         }
     }
 
