@@ -1,4 +1,4 @@
-﻿namespace Server.Models
+﻿namespace Server.Models.Client
 {
     /// <summary>
     /// Client Data Model
@@ -16,7 +16,7 @@
         public int LocationId { get; set; } //to be enum maybe
 
         /// <summary>
-        ///  Electricity Usage
+        ///  Electricity Usage in kWh
         /// </summary>
         public decimal ElectricityUsage { get; set; }
 
@@ -24,5 +24,10 @@
         /// Tarif
         /// </summary>
         //public Tarif Tarif { get; set; }
+
+        /// <summary>
+        ///  Date and Time of client connection
+        /// </summary>
+        public string ConnectionDateAndTime { get; set; }
     }
 }
