@@ -1,12 +1,11 @@
-﻿using Server.Models.File;
-using Server.Repositories;
-using Server.Services;
+﻿using Server.Repositories.File;
+using Server.Services.File;
 
 namespace Server.Factories
 {
     public class FileFactory
     {
-        public IFileWriter CreateFileWriter(int clientId, FileRepository fileRepository)
+        public IFileService CreateFileWriter(int clientId, FileRepository fileRepository)
         {
             return new FileService(clientId, fileRepository);
         }

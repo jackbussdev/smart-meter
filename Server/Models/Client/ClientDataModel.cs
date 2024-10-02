@@ -1,6 +1,6 @@
 ﻿namespace Server.Models.Client
 {
-    internal class ClientDataModel : IClientDataModel
+    public class ClientDataModel : IClientDataModel
     {
         public int Id { get; set; }
         public int LocationId { get; set; }

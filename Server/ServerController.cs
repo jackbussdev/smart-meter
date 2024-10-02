@@ -3,7 +3,8 @@ using NetMQ.Sockets;
 using Newtonsoft.Json;
 using Server.Factories;
 using Server.Models.Client;
-using Server.Repositories;
+using Server.Repositories.File;
+using System.Runtime.CompilerServices;
 
 namespace Server;
 
@@ -17,25 +18,56 @@ public class ServerController(FileFactory fileFacotry, FileRepository fileReposi
 
     public async Task StartServer()
     {
-        Console.WriteLine("Starting Server...");
+        Console.WriteLine("Starting Server...\n");
 
         // Start server and accept client message
         using var server = new ResponseSocket();
         server.Bind("tcp://*:5556");
-        var message = server.ReceiveFrameString();
+        var dataFromClient = server.ReceiveFrameString();
 
-        if (message is null)
+        if (dataFromClient is null)
         {
-            Console.WriteLine("Client data is empty...");
+            Console.WriteLine("Error: Client data is empty...");
             return;
         }
 
-        var clientData = JsonConvert.DeserializeObject<ClientDataModel>(message);
+        var clientDataAsString = JsonConvert.DeserializeObject<ClientDataModel>(dataFromClient);
 
-        var fileService = _fileFactory.CreateFileWriter(clientData!.Id, _fileRepository);
+        if (!IsClientDataValid(clientDataAsString!)) 
+        { 
+            return; 
+        }
 
-        await fileService.WriteDataAsync(clientData.Id, clientData.LocationId, clientData.ElectricityUsage, clientData.ConnectionDateAndTime);
+        var fileService = _fileFactory.CreateFileWriter(clientDataAsString!.Id, _fileRepository);
+
+        await fileService.WriteDataAsync(clientDataAsString);
 
         Console.ReadLine();
+    }
+
+    private bool IsClientDataValid(ClientDataModel clientData)
+    {
+        if (clientData.Id == 0)
+        {
+            Console.WriteLine("Error when verifying client");
+            Console.ReadLine();
+            return false;
+        }
+
+        if (clientData.LocationId == 0)
+        {
+            Console.WriteLine("Error when verifying client's location");
+            Console.ReadLine();
+            return false;
+        }
+
+        if (string.IsNullOrEmpty(clientData.ConnectionDateAndTime))
+        {
+            Console.WriteLine("Error when verifying client's time of connection");
+            Console.ReadLine();
+            return false;
+        }
+
+        return true;
     }
 }
