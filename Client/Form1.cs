@@ -25,16 +25,6 @@ namespace Client
 
             Thread t = new Thread(new ThreadStart(readingController.SendReading));
             t.Start();
-
-
-
-
-            /*readingController.SendReading(new()
-            {
-                Id = 2,
-                LocationId = 47,
-                ElectricityUsage = 500,
-            }, richTextBox1);*/
         }
 
         private void button2_Click(object sender, EventArgs e)

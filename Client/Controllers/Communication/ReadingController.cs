@@ -38,17 +38,15 @@ namespace Client.Controllers.Communication
 
         public void SendReading()
         {
-            using (var client = _rs)
+            using var client = _rs;
+            while (true)
             {
-                while (true)
-                {
-                    var serialisedData = JsonConvert.SerializeObject(_clientDataModel);
-                    client.SendFrame(serialisedData);
-                    var resp = client.ReceiveFrameString();
-                    callbackToSetBox(resp);
+                var serialisedData = JsonConvert.SerializeObject(_clientDataModel);
+                client.SendFrame(serialisedData);
+                var resp = client.ReceiveFrameString();
+                callbackToSetBox(resp);
 
-                    Thread.Sleep(2000);
-                }
+                Thread.Sleep(2000);
             }
         }
     }
