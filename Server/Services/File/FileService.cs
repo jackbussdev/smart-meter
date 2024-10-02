@@ -1,6 +1,8 @@
 ﻿using Server.Models.Client;
 using Server.Repositories.File;
 
+// https://www.youtube.com/watch?v=AMZzsMN02f0&t=102s - Showed me how to create directory and folder path for file
+
 namespace Server.Services.File
 {
     public class FileService(int clientId, FileRepository fileRepository) : IFileService

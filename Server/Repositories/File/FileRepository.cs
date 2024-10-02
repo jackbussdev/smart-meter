@@ -1,6 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Server.Models.Client;
 
+// https://code-maze.com/csharp-write-json-into-a-file/ - showed me basics of writing to a JSON file in C#
+// https://code-maze.com/csharp-read-and-process-json-file/ - showed me basics of how to read from a JSON file in C#
+
 namespace Server.Repositories.File
 {
     public class FileRepository : IFileRepository

@@ -4,7 +4,9 @@ using Newtonsoft.Json;
 using Server.Factories;
 using Server.Models.Client;
 using Server.Repositories.File;
-using System.Runtime.CompilerServices;
+
+// https://zeromq.org/languages/csharp/ - Tought me the basics of how to allow communication between clients 
+// and servers using ZeroMQ in C#
 
 namespace Server;
 
