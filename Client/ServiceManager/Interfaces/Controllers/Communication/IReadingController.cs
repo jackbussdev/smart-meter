@@ -11,6 +11,8 @@ namespace Client.ServiceManager.Interfaces.Controllers.Communication
 {
     public interface IReadingController
     {
-        public void SendReading(ClientDataModel cdm);
+        public void SendReading();
+        public void setClientDataModel(ClientDataModel cdm);
+        public void setRichTextBox(Action<string> callback);
     }
 }

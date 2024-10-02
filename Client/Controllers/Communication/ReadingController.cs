@@ -8,26 +8,47 @@ using NetMQ.Sockets;
 using Client.Models.Communication;
 using Newtonsoft.Json;
 using Client.ServiceManager.Interfaces.Controllers.Communication;
+using System.ServiceModel.Dispatcher;
+using System.Threading;
 
 namespace Client.Controllers.Communication
 {
-    internal class ReadingController : IReadingController
+    public class ReadingController : IReadingController
     {
-        private RequestSocket rs;
+        private RequestSocket _rs;
+
+        private RichTextBox _richTextBox;
+        private ClientDataModel _clientDataModel;
+        private Action<string> callbackToSetBox;
 
         public ReadingController(RequestSocket socket)
         {
-            rs = socket;
+            _rs = socket;
         }
 
-        public void SendReading(ClientDataModel cdm)
+        public void setClientDataModel(ClientDataModel cdm)
         {
-            using (var client = rs)
-            {
-                //client.Connect("tcp://127.0.0.1:5556");
+            _clientDataModel = cdm;
+        }
 
-                var serialisedData = JsonConvert.SerializeObject(cdm);
-                client.SendFrame(serialisedData);
+        public void setRichTextBox(Action<string> callback)
+        {
+            callbackToSetBox = callback;
+        }
+
+        public void SendReading()
+        {
+            using (var client = _rs)
+            {
+                while (true)
+                {
+                    var serialisedData = JsonConvert.SerializeObject(_clientDataModel);
+                    client.SendFrame(serialisedData);
+                    var resp = client.ReceiveFrameString();
+                    callbackToSetBox(resp);
+
+                    Thread.Sleep(2000);
+                }
             }
         }
     }

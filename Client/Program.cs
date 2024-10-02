@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Client.ServiceManager.Interfaces.Controllers.Communication;
 using Client.Controllers.Communication;
+using Client.Models.Communication;
 
 namespace Client
 {
@@ -20,6 +21,7 @@ namespace Client
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             var host = CreateHostBuilder().Build();
+            _serviceProvider = host.Services;
             Application.Run(_serviceProvider.GetRequiredService<Form1>());
         }
 
