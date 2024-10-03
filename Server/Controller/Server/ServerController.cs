@@ -6,7 +6,7 @@ using Server.Factories;
 using Server.Models.Client;
 using Server.Repositories.File;
 
-// https://zeromq.org/languages/csharp/ - Tought me the basics of how to allow communication between clients 
+// https://zeromq.org/languages/csharp/ - Tought the basics of how to allow communication between clients 
 // and servers using ZeroMQ in C#
 
 namespace Server.Controller.Server;
