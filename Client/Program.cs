@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Client.ServiceManager.Interfaces.Controllers.Communication;
 using Client.Controllers.Communication;
-using Client.Models.Communication;
 
 namespace Client
 {

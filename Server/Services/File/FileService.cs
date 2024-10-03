@@ -12,7 +12,7 @@ namespace Server.Services.File
         private readonly FileRepository _fileRepository = fileRepository ??
             throw new ArgumentNullException(nameof(fileRepository));
 
-        public async Task WriteDataAsync(ClientDataModel clientData)
+        public virtual async Task WriteDataAsync(ClientDataModel clientData)
         {
             try
             {

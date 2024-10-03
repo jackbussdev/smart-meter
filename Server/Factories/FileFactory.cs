@@ -5,7 +5,7 @@ namespace Server.Factories
 {
     public class FileFactory
     {
-        public IFileService CreateFileWriter(int clientId, FileRepository fileRepository)
+        public virtual IFileService CreateFileService(int clientId, FileRepository fileRepository)
         {
             return new FileService(clientId, fileRepository);
         }

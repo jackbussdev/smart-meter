@@ -33,7 +33,8 @@ namespace Client
             {
                 Id = 1,
                 LocationId = 45,
-                ElectricityUsage = Random.Shared.NextInt64()
+                ElectricityUsage = Random.Shared.NextInt64(),
+                ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")
             });
         }
 

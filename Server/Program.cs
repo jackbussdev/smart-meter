@@ -1,7 +1,7 @@
-﻿using Server;
-using Server.Factories;
+﻿using Server.Factories;
 using Server.Repositories.File;
 using Microsoft.Extensions.DependencyInjection;
+using Server.Controller.Server;
 
 internal class Program
 {
