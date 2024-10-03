@@ -10,9 +10,11 @@
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="6.12.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.1.0" />
     <PackageReference Include="Moq" Version="4.20.72" />
     <PackageReference Include="NetMQ" Version="4.0.1.13" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.1.0" />
     <PackageReference Include="xunit.extensibility.core" Version="2.9.2" />
     <PackageReference Include="ZeroMQ" Version="4.1.0.31" />
   </ItemGroup>

@@ -29,8 +29,6 @@ namespace Client
         {
             return Host.CreateDefaultBuilder().ConfigureServices((context, services) =>
             {
-                //services.AddSingleton<DataContext>(provider => dataContext);
-                //services.AddTransient<IReadingController, ReadingController>();
                 services.AddSingleton<IReadingController, ReadingController>(
                     serviceProvider => new ReadingController(rs));
                 services.AddTransient<Form1>();

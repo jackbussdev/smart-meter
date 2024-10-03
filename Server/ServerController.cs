@@ -23,26 +23,32 @@ public class ServerController(FileFactory fileFacotry, FileRepository fileReposi
         Console.WriteLine("Starting Server...\n");
 
         // Start server and accept client message
+        using var poller = new NetMQPoller();
         using var server = new ResponseSocket();
+
+        server.ReceiveReady += Server_ReceiveReady;
+        poller.Add(server);
+        poller.RunAsync();
         server.Bind("tcp://*:5556");
-        var dataFromClient = server.ReceiveFrameString();
 
-        if (dataFromClient is null)
-        {
-            Console.WriteLine("Error: Client data is empty...");
-            return;
-        }
+        //var dataFromClient = server.ReceiveFrameString();
 
-        var clientDataAsString = JsonConvert.DeserializeObject<ClientDataModel>(dataFromClient);
+        //if (dataFromClient is null)
+        //{
+        //    Console.WriteLine("Error: Client data is empty...");
+        //    return;
+        //}
 
-        if (!IsClientDataValid(clientDataAsString!)) 
-        { 
-            return; 
-        }
+        //var clientDataAsString = JsonConvert.DeserializeObject<ClientDataModel>(dataFromClient);
 
-        var fileService = _fileFactory.CreateFileWriter(clientDataAsString!.Id, _fileRepository);
+        //if (!IsClientDataValid(clientDataAsString!)) 
+        //{ 
+        //    return; 
+        //}
 
-        await fileService.WriteDataAsync(clientDataAsString);
+        //var fileService = _fileFactory.CreateFileWriter(clientDataAsString!.Id, _fileRepository);
+
+        //await fileService.WriteDataAsync(clientDataAsString);
 
         Console.ReadLine();
     }
@@ -71,5 +77,19 @@ public class ServerController(FileFactory fileFacotry, FileRepository fileReposi
         }
 
         return true;
+    }
+
+    private static void Server_ReceiveReady(object sender, NetMQSocketEventArgs e)
+    {
+        //-------------------------------------------------------
+        //
+        //
+        //  For some reason, fromClientMessage is null? Not sure why
+        //
+        //
+        //-------------------------------------------------------
+        string fromClientMessage = e.Socket.ReceiveFrameString();
+        Console.WriteLine("From Client: {0}", fromClientMessage);
+        e.Socket.SendFrame("Hi Back");
     }
 }
