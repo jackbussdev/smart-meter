@@ -41,6 +41,8 @@ bld/
 # Visual Studio 2017 auto generated files
 Generated\ Files/
 
+clienttest/
+
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
@@ -361,3 +363,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/clienttest2/ClientTest.csproj
+/clienttest2/Program.cs

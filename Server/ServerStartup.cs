@@ -16,7 +16,7 @@ internal class ServerStartup
         using (var poller = new NetMQPoller())
         {
 
-            using var server = new ResponseSocket());
+            using var server = new ResponseSocket();
 
             server.ReceiveReady += Server_ReceiveReady;
             poller.Add(server);
