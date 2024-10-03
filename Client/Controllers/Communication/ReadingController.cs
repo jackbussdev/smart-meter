@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NetMQ;
+﻿using NetMQ;
 using NetMQ.Sockets;
 using Client.Models.Communication;
 using Newtonsoft.Json;
 using Client.ServiceManager.Interfaces.Controllers.Communication;
-using System.ServiceModel.Dispatcher;
-using System.Threading;
 
 namespace Client.Controllers.Communication
 {
@@ -41,6 +34,15 @@ namespace Client.Controllers.Communication
             using var client = _rs;
             while (true)
             {
+                //-------------------------------------------------------
+                //
+                //
+                //  Ive had a quick look, i think the reason its sending null
+                //  is because you're serialising clientDataModel but not
+                //  assigning any of the values (Id, LocationId etc)
+                //
+                //
+                //-------------------------------------------------------
                 var serialisedData = JsonConvert.SerializeObject(_clientDataModel);
                 client.SendFrame(serialisedData);
                 var resp = client.ReceiveFrameString();
