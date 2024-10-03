@@ -39,10 +39,11 @@ namespace ServerUnitTests.Controller
 
             // Assert
             result.Should().BeTrue(because: "All of the client data model paramters are present");
+            controller.ValidationMessage.Should().BeNull();
         }
 
         [Fact]
-        public void IsClientDataValid_With_Zero_Id_Returns_False_And_Error()
+        public void IsClientDataValid_With_Zero_Id_Returns_False()
         {
             // Arrange
             var controller = new ServerController(_fileFactoryMock.Object, _fileRepositoryMock.Object);
@@ -59,11 +60,11 @@ namespace ServerUnitTests.Controller
 
             // Assert
             result.Should().BeFalse(because: "The client didnt have an id");
-            controller.ValidationError.Should().Be("Error when verifying client");
+            controller.ValidationMessage.Should().Be("Error when verifying client");
         }
 
         [Fact]
-        public void IsClientDataValid_With_Zero_Loation_Id_Returns_False_And_Error()
+        public void IsClientDataValid_With_Zero_Loation_Id_Returns_False()
         {
             // Arrange
             var controller = new ServerController(_fileFactoryMock.Object, _fileRepositoryMock.Object);
@@ -80,7 +81,7 @@ namespace ServerUnitTests.Controller
 
             // Assert
             result.Should().BeFalse(because: "The client didnt have an location id");
-            controller.ValidationError.Should().Be("Error when verifying client's location");
+            controller.ValidationMessage.Should().Be("Error when verifying client's location");
         }
 
         [Fact]
@@ -101,7 +102,7 @@ namespace ServerUnitTests.Controller
 
             // Assert
             result.Should().BeFalse(because: "The client didnt have a connection date and time");
-            controller.ValidationError.Should().Be("Error when verifying client's time of connection");
+            controller.ValidationMessage.Should().Be("Error when verifying client's time of connection");
         }
 
         [Fact]

@@ -32,7 +32,7 @@ namespace Client
             readingController.setClientDataModel(new()
             {
                 Id = 1,
-                LocationId = 45,
+                LocationId = 2,
                 ElectricityUsage = Random.Shared.NextInt64(),
                 ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")
             });

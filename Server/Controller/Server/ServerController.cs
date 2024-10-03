@@ -1,4 +1,5 @@
-﻿using NetMQ;
+﻿using Microsoft.IdentityModel.Tokens;
+using NetMQ;
 using NetMQ.Sockets;
 using Newtonsoft.Json;
 using Server.Factories;
@@ -18,33 +19,32 @@ public class ServerController(FileFactory fileFacotry, FileRepository fileReposi
     private readonly FileRepository _fileRepository = fileRepository ??
                 throw new ArgumentNullException(nameof(fileRepository));
 
-    private NetMQPoller poller;
-    private ResponseSocket server;
+    private NetMQPoller _poller = [];
+    private ResponseSocket _server = new();
 
-    public string ValidationError { get; set; }
+    public string? ValidationMessage { get; set; }
 
     public async Task StartServer()
     {
         Console.WriteLine("Starting Server...\n");
         try
         {
-            poller = [];
-            server = new ResponseSocket();
+            // Handle the _server's ReceiveReady event
+            _server.ReceiveReady += async (sender, e) => await Server_ReceiveReady(sender, e);
 
-            // Handle the server's ReceiveReady event
-            server.ReceiveReady += async (sender, e) => await Server_ReceiveReady(sender, e);
+            _poller.Add(_server);
 
-            poller.Add(server);
+            // Run the _poller asynchronously
+            _poller.RunAsync();
+            _server.Bind("tcp://*:5556");
 
-            // Run the poller asynchronously
-            poller.RunAsync();
-            server.Bind("tcp://*:5556");
-
-            ValidationError = "Server successfully started!\n";
+            ValidationMessage = "Server successfully started!";
+            Console.WriteLine($"{ValidationMessage}\n");
         }
         catch (Exception ex)
         {
-            ValidationError = $"Server failed to start with error message {ex.Message}";
+            ValidationMessage = $"Server failed to start with error message {ex.Message}";
+            Console.WriteLine($"{ValidationMessage}\n");
         }
 
         Console.ReadLine();
@@ -54,19 +54,22 @@ public class ServerController(FileFactory fileFacotry, FileRepository fileReposi
     {
         if (clientData.Id == 0)
         {
-            ValidationError = "Error when verifying client";
+            ValidationMessage = "Error when verifying client";
+            Console.WriteLine($"{ValidationMessage}\n");
             return false;
         }
 
         if (clientData.LocationId == 0)
         {
-            ValidationError = "Error when verifying client's location";
+            ValidationMessage = "Error when verifying client's location";
+            Console.WriteLine($"{ValidationMessage}\n");
             return false;
         }
 
         if (string.IsNullOrEmpty(clientData.ConnectionDateAndTime))
         {
-            ValidationError = "Error when verifying client's time of connection";
+            ValidationMessage = "Error when verifying client's time of connection";
+            Console.WriteLine($"{ValidationMessage}\n");
             return false;
         }
 
@@ -76,11 +79,12 @@ public class ServerController(FileFactory fileFacotry, FileRepository fileReposi
     private async Task Server_ReceiveReady(object sender, NetMQSocketEventArgs e)
     {
         string dataFromClient = e.Socket.ReceiveFrameString();
-        Console.WriteLine("From Client: {0}", dataFromClient);
+        Console.WriteLine($"From Client: {dataFromClient}\n");
 
         if (dataFromClient is null)
         {
-            Console.WriteLine("Error: Client data is empty...");
+            ValidationMessage = "Error: Client data is empty...";
+            Console.WriteLine($"{ValidationMessage}\n");
             return;
         }
 
