@@ -81,13 +81,6 @@ public class ServerController(FileFactory fileFacotry, FileRepository fileReposi
 
     private static void Server_ReceiveReady(object sender, NetMQSocketEventArgs e)
     {
-        //-------------------------------------------------------
-        //
-        //
-        //  For some reason, fromClientMessage is null? Not sure why
-        //
-        //
-        //-------------------------------------------------------
         string fromClientMessage = e.Socket.ReceiveFrameString();
         Console.WriteLine("From Client: {0}", fromClientMessage);
         e.Socket.SendFrame("Hi Back");
