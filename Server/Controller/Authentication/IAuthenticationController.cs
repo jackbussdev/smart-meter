@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Server.ServiceManager.Interfaces.Authentication
+namespace Server.Controller.Authentication
 {
     internal interface IAuthenticationController
     {
@@ -12,22 +12,22 @@ namespace Server.ServiceManager.Interfaces.Authentication
         /// Log in with username and password
         /// </summary>
         /// <param name="username">Usually the serial number</param>
-        /// <param name="password">A six-digit code generated using generatePasswordForUsername</param>
+        /// <param name="password">A six-digit code generated using GeneratePasswordForUsername</param>
         /// <returns></returns>
-        public string loginWithUsernamePassword(string username, string password);
+        public string LoginWithUsernamePassword(string username, string password);
 
         /// <summary>
         /// The one-time-passcode generation for smart meter onboarding
         /// </summary>
         /// <param name="username">Meter serial number</param>
         /// <returns></returns>
-        public string generatePasswordForUsername(string username);
+        public string GeneratePasswordForUsername(string username);
 
         /// <summary>
         /// Invalidate the one-time-passcode for a meter
         /// </summary>
         /// <param name="username">Meter serial number</param>
         /// <returns></returns>
-        public bool invalidatePasswordForUsername(string username);
+        public bool InvalidatePasswordForUsername(string username);
     }
 }

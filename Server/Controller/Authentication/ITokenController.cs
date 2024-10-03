@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Server.ServiceManager.Interfaces.Authentication
+namespace Server.Controller.Authentication
 {
     internal interface ITokenController
     {
@@ -13,6 +13,6 @@ namespace Server.ServiceManager.Interfaces.Authentication
         /// </summary>
         /// <param name="username">Usually the meter serial number</param>
         /// <returns></returns>
-        public string generateTokenForUsername(string username);
+        public string GenerateTokenForUsername(string username);
     }
 }
