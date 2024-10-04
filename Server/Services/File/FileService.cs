@@ -1,7 +1,7 @@
 ﻿using Server.Models.Client;
 using Server.Repositories.File;
 
-// https://www.youtube.com/watch?v=AMZzsMN02f0&t=102s - Showed me how to create directory and folder path for file
+// https://www.youtube.com/watch?v=AMZzsMN02f0&t=102s - Showed how to create directory and folder path for file
 
 namespace Server.Services.File
 {
@@ -12,7 +12,7 @@ namespace Server.Services.File
         private readonly FileRepository _fileRepository = fileRepository ??
             throw new ArgumentNullException(nameof(fileRepository));
 
-        public async Task WriteDataAsync(ClientDataModel clientData)
+        public virtual async Task WriteDataAsync(ClientDataModel clientData)
         {
             try
             {
