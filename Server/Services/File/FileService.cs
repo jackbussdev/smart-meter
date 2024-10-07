@@ -7,7 +7,7 @@ namespace Server.Services.File
 {
     public class FileService(int clientId, FileRepository fileRepository) : IFileService
     {
-        private readonly string _fileName = $"{clientId}_Data_Readings";
+        private string _fileName;
 
         private readonly FileRepository _fileRepository = fileRepository ??
             throw new ArgumentNullException(nameof(fileRepository));
@@ -16,6 +16,8 @@ namespace Server.Services.File
         {
             try
             {
+                _fileName = $"{clientId}_Data_Readings";
+
                 // Creates folder in Documents in File Explorer which is where the
                 // files for storing data will be located
                 var directory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);

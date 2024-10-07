@@ -115,6 +115,7 @@ namespace ServerUnitTests.Controller
             {
                 Id = 1,
                 LocationId = 2,
+                ElectricityUsage = 3,
                 ConnectionDateAndTime = "2024-10-02"
             };
             var clientDataAsString = JsonConvert.SerializeObject(validClientData);
