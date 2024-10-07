@@ -6,12 +6,21 @@ namespace Client
 {
     public partial class Form1 : Form
     {
-
         IReadingController readingController;
         public Form1(IReadingController rc)
         {
             readingController = rc;
             InitializeComponent();
+
+            readingController.SetClientDataModel(new()
+            {
+                Id = Random.Shared.Next(),
+                LocationId = 2,
+                ElectricityUsage = 23,
+                ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")
+            });
+
+            readingController.SendReading();
         }
 
         public void receivedReading(string reading)
@@ -21,20 +30,22 @@ namespace Client
 
         private void button1_Click(object sender, EventArgs e)
         {
-            readingController.setRichTextBox(receivedReading);
+            readingController.SetRichTextBox(receivedReading);
 
-            Thread t = new Thread(new ThreadStart(readingController.SendReading));
-            t.Start();
+            //readingController.SendReading();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            readingController.setClientDataModel(new()
+            readingController.SetClientDataModel(new()
             {
-                Id = 1,
-                LocationId = 45,
-                ElectricityUsage = Random.Shared.NextInt64()
+                Id = Random.Shared.Next(),
+                LocationId = 2,
+                ElectricityUsage = 23,
+                ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")
             });
+
+            readingController.SendReading();
         }
 
         private void Form1_Load(object sender, EventArgs e)

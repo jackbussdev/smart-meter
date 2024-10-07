@@ -46,7 +46,7 @@ namespace Server.UnitTests.Services
         }
 
         [Fact]
-        public async Task Read_Data_Async_Should_Call_File_Repository()
+        public async Task Read_Data_Async_Calls_File_Repository()
         {
             // Arrange
             var expectedData = new List<ClientDataModel>();

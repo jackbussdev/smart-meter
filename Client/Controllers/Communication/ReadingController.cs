@@ -8,47 +8,46 @@ namespace Client.Controllers.Communication
 {
     public class ReadingController : IReadingController
     {
-        private RequestSocket _rs;
+        private DealerSocket _rs;
 
         private RichTextBox _richTextBox;
         private ClientDataModel _clientDataModel;
         private Action<string> callbackToSetBox;
 
-        public ReadingController(RequestSocket socket)
+        public ReadingController(DealerSocket socket)
         {
             _rs = socket;
         }
 
-        public void setClientDataModel(ClientDataModel cdm)
+        public void SetClientDataModel(ClientDataModel cdm)
         {
             _clientDataModel = cdm;
         }
 
-        public void setRichTextBox(Action<string> callback)
+        public void SetRichTextBox(Action<string> callback)
         {
             callbackToSetBox = callback;
         }
 
         public void SendReading()
         {
-            using var client = _rs;
-            while (true)
+            try
             {
-                //-------------------------------------------------------
-                //
-                //
-                //  Ive had a quick look, i think the reason its sending null
-                //  is because you're serialising clientDataModel but not
-                //  assigning any of the values (Id, LocationId etc)
-                //
-                //
-                //-------------------------------------------------------
-                var serialisedData = JsonConvert.SerializeObject(_clientDataModel);
-                client.SendFrame(serialisedData);
-                var resp = client.ReceiveFrameString();
-                callbackToSetBox(resp);
+                while (true)
+                {
+                    using var client = _rs;
 
-                Thread.Sleep(2000);
+                    client.Connect("tcp://localhost:5556");
+                    var serialisedData = JsonConvert.SerializeObject(_clientDataModel);
+
+                    client.SendMoreFrame("").SendFrame(serialisedData);
+
+                    Thread.Sleep(3000);
+                }
+            }
+            catch (Exception ex) 
+            {
+                Console.WriteLine(ex.Message);
             }
         }
     }
