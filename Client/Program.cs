@@ -8,8 +8,9 @@ namespace Client
 {
     internal static class Program
     {
-        private static readonly RequestSocket rs = new RequestSocket("tcp://127.0.0.1:5556");
+        private static readonly DealerSocket rs = new("tcp://localhost:5556");
         private static IServiceProvider _serviceProvider { get; set; }
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
