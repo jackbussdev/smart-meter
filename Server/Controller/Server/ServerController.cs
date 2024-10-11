@@ -4,19 +4,25 @@ using Newtonsoft.Json;
 using Server.Factories;
 using Server.Models.Client;
 using Server.Repositories.File;
+using Server.Services.DataCalculation;
 
 // https://zeromq.org/languages/csharp/ - Tought the basics of how to allow communication between clients 
 // and servers using ZeroMQ in C#
 
 namespace Server.Controller.Server;
 
-public class ServerController(FileFactory fileFacotry, FileRepository fileRepository)
+public class ServerController(FileFactory fileFacotry, 
+    FileRepository fileRepository, 
+    DataCalculationService dataCalculationService)
 {
-    private readonly FileFactory _fileFactory = fileFacotry ??
-                throw new ArgumentNullException(nameof(fileFacotry));
+    private readonly FileFactory _fileFactory = fileFacotry 
+        ?? throw new ArgumentNullException(nameof(fileFacotry));
 
-    private readonly FileRepository _fileRepository = fileRepository ??
-                throw new ArgumentNullException(nameof(fileRepository));
+    private readonly FileRepository _fileRepository = fileRepository 
+        ?? throw new ArgumentNullException(nameof(fileRepository));
+
+    private readonly DataCalculationService _dataCalculationService = dataCalculationService
+        ?? throw new ArgumentNullException(nameof(dataCalculationService));
 
     private NetMQPoller _poller = [];
     private ResponseSocket _server = new();
@@ -75,7 +81,7 @@ public class ServerController(FileFactory fileFacotry, FileRepository fileReposi
         return true;
     }
 
-    private async Task Server_ReceiveReady(object sender, NetMQSocketEventArgs e)
+    public async Task Server_ReceiveReady(object sender, NetMQSocketEventArgs e)
     {
         string dataFromClient = e.Socket.ReceiveFrameString();
         Console.WriteLine($"From Client: {dataFromClient}\n");
@@ -87,11 +93,6 @@ public class ServerController(FileFactory fileFacotry, FileRepository fileReposi
             return;
         }
 
-        await ProcessClientData(dataFromClient);
-    }
-
-    public async Task ProcessClientData(string dataFromClient)
-    {
         var clientData = JsonConvert.DeserializeObject<ClientDataModel>(dataFromClient);
 
         if (!IsClientDataValid(clientData!))
@@ -99,6 +100,13 @@ public class ServerController(FileFactory fileFacotry, FileRepository fileReposi
             return;
         }
 
+        var cost = await _dataCalculationService.CalculateClientCost(clientData);
+
+        await ProcessClientDataToFile(clientData);
+    }
+
+    public async Task ProcessClientDataToFile(ClientDataModel clientData)
+    {
         var fileService = _fileFactory.CreateFileService(clientData!.Id, _fileRepository);
 
         await fileService.WriteDataAsync(clientData);
