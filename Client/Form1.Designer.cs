@@ -28,13 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             MindFusion.Gauges.OvalScale ovalScale1 = new MindFusion.Gauges.OvalScale();
             MindFusion.Gauges.Pointer pointer1 = new MindFusion.Gauges.Pointer();
             MindFusion.Gauges.Range range1 = new MindFusion.Gauges.Range();
+            MindFusion.Gauges.Range range2 = new MindFusion.Gauges.Range();
+            MindFusion.Gauges.Range range3 = new MindFusion.Gauges.Range();
             button1 = new Button();
             richTextBox1 = new RichTextBox();
             button2 = new Button();
             panel1 = new Panel();
+            timer_Lbl = new Label();
+            clock_Lbl = new Label();
+            time_Lbl = new Label();
             panel3 = new Panel();
             home_Lbl = new Label();
             now_Pnl = new Panel();
@@ -42,6 +48,7 @@
             panel4 = new Panel();
             Today_lbl = new Label();
             today_Gauge = new MindFusion.Gauges.WinForms.OvalGauge();
+            clock_Tmr = new System.Windows.Forms.Timer(components);
             panel1.SuspendLayout();
             now_Pnl.SuspendLayout();
             panel4.SuspendLayout();
@@ -82,12 +89,47 @@
             // 
             panel1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             panel1.BackColor = Color.FromArgb(163, 163, 163);
+            panel1.Controls.Add(timer_Lbl);
+            panel1.Controls.Add(clock_Lbl);
+            panel1.Controls.Add(time_Lbl);
             panel1.Controls.Add(panel3);
             panel1.Controls.Add(home_Lbl);
             panel1.Location = new Point(0, 26);
             panel1.Name = "panel1";
             panel1.Size = new Size(796, 61);
             panel1.TabIndex = 3;
+            // 
+            // timer_Lbl
+            // 
+            timer_Lbl.AutoSize = true;
+            timer_Lbl.Font = new Font("Segoe UI", 10F);
+            timer_Lbl.ForeColor = Color.White;
+            timer_Lbl.Location = new Point(698, 23);
+            timer_Lbl.Name = "timer_Lbl";
+            timer_Lbl.Size = new Size(79, 19);
+            timer_Lbl.TabIndex = 8;
+            timer_Lbl.Text = "placeholder";
+            // 
+            // clock_Lbl
+            // 
+            clock_Lbl.AutoSize = true;
+            clock_Lbl.Font = new Font("Segoe UI", 10F);
+            clock_Lbl.ForeColor = Color.White;
+            clock_Lbl.Location = new Point(702, 23);
+            clock_Lbl.Name = "clock_Lbl";
+            clock_Lbl.Size = new Size(0, 19);
+            clock_Lbl.TabIndex = 7;
+            // 
+            // time_Lbl
+            // 
+            time_Lbl.AutoSize = true;
+            time_Lbl.Font = new Font("Segoe UI", 10F);
+            time_Lbl.ForeColor = Color.White;
+            time_Lbl.Location = new Point(661, 23);
+            time_Lbl.Name = "time_Lbl";
+            time_Lbl.Size = new Size(41, 19);
+            time_Lbl.TabIndex = 6;
+            time_Lbl.Text = "Time:";
             // 
             // panel3
             // 
@@ -167,13 +209,24 @@
             range1.Margin = new MindFusion.Thickness(0F, 0F, 0F, 0F, true);
             range1.MaxValue = 23F;
             range1.Stroke = new MindFusion.Drawing.Pen("0/#FF000000/0/0/0//0/0/10/");
+            range2.Fill = new MindFusion.Drawing.SolidBrush("#FFFFBF00");
+            range2.Margin = new MindFusion.Thickness(0F, 0F, 0F, 0F, true);
+            range3.Fill = new MindFusion.Drawing.SolidBrush("#FFCC0606");
+            range3.Margin = new MindFusion.Thickness(0F, 0F, 0F, 0F, true);
             ovalScale1.Ranges.Add(range1);
+            ovalScale1.Ranges.Add(range2);
+            ovalScale1.Ranges.Add(range3);
             ovalScale1.Stroke = new MindFusion.Drawing.Pen("0/#FFD3D3D3/0/0/0//0/0/10/");
             today_Gauge.Scales.Add(ovalScale1);
             today_Gauge.Size = new Size(172, 142);
             today_Gauge.TabIndex = 6;
             today_Gauge.Text = "ovalGauge1";
             today_Gauge.Click += ovalGauge1_Click;
+            // 
+            // clock_Tmr
+            // 
+            clock_Tmr.Enabled = true;
+            clock_Tmr.Tick += clock_Tmr_Tick;
             // 
             // Form1
             // 
@@ -214,5 +267,9 @@
         private Label Now_lbl;
         private Label Today_lbl;
         private MindFusion.Gauges.WinForms.OvalGauge today_Gauge;
+        private Label time_Lbl;
+        private Label clock_Lbl;
+        private System.Windows.Forms.Timer clock_Tmr;
+        private Label timer_Lbl;
     }
 }
