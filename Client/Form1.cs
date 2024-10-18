@@ -19,8 +19,6 @@ namespace Client
                 ElectricityUsage = 23,
                 ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")
             });
-
-            readingController.SendReading();
         }
 
         public void receivedReading(string reading)
@@ -32,7 +30,8 @@ namespace Client
         {
             readingController.SetRichTextBox(receivedReading);
 
-            //readingController.SendReading();
+            Thread t = new Thread(new ThreadStart(readingController.SendReading));
+            t.Start();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -44,8 +43,6 @@ namespace Client
                 ElectricityUsage = 23,
                 ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")
             });
-
-            readingController.SendReading();
         }
 
         private void Form1_Load(object sender, EventArgs e)
