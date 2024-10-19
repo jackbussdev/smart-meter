@@ -11,11 +11,11 @@ namespace Server.Services.DataCalculation
         /// <summary>
         /// Calculate the electricity price
         /// </summary>
-        public Task<ClientDataModel> CalculateClientCost(ClientDataModel clientData);
+        public Task<ClientDataModel> CalculateClientCostAsync(ClientDataModel clientData);
 
         /// <summary>
         /// Get the standard energy rates from Octopus Energy
         /// </summary>
-        public Task<ElectricityDataResponse> GetStandardUnitRates(string productId, string tariffCode, DateTime periodFrom, DateTime periodTo);
+        public Task<ElectricityDataResponse> GetStandardRatesAsync(string productId, string tariffCode, DateTime periodFrom, DateTime periodTo);
     }
 }

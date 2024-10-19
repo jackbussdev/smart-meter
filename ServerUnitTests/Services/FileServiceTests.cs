@@ -23,7 +23,7 @@ namespace Server.UnitTests.Services
         }
 
         [Fact]
-        public void File_Service_Should_Error_On_Missing_File_Repository_Constructor_Paraneter()
+        public void FileService_Should_Error_On_Missing_File_Repository_Constructor_Parameter()
         {
             var expectedError = new ArgumentNullException("fileRepository");
 
@@ -33,7 +33,7 @@ namespace Server.UnitTests.Services
         }
 
         [Fact]
-        public async Task Write_Data_Async_Should_Call_File_Repository()
+        public async Task WriteDataAsync_Should_Call_File_Repository()
         {
             // Arrange
             var fileService = new FileService(_clientData.Id, _fileRepositoryMock.Object);
@@ -46,7 +46,7 @@ namespace Server.UnitTests.Services
         }
 
         [Fact]
-        public async Task Read_Data_Async_Calls_File_Repository()
+        public async Task ReadDataAsync_Calls_File_Repository()
         {
             // Arrange
             var expectedData = new List<ClientDataModel>();
