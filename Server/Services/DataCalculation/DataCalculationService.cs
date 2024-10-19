@@ -1,18 +1,22 @@
 ﻿using Server.Models.Client;
 using Newtonsoft.Json;
 using Server.Models.OctopusApiModel;
+using Server.Services.Http;
+
+// https://learn.microsoft.com/en-us/dotnet/api/system.net.http.httpclient?view=net-8.0 - showed how to call external APIs in C#
 
 namespace Server.Services.DataCalculation
 {
-    public class DataCalculationService(HttpClient httpClient) : IDataCalculationService
+    public class DataCalculationService(IHttpService httpService) : IDataCalculationService
     {
-        private readonly HttpClient _httpClient = httpClient
-            ?? throw new ArgumentNullException(nameof(httpClient));
+        private readonly IHttpService _httpService = httpService
+            ?? throw new ArgumentNullException(nameof(httpService));
 
         public string? ValidationMessage { get; set; }
 
-        public virtual async Task<ClientDataModel> CalculateClientCost(ClientDataModel clientData)
+        public virtual async Task<ClientDataModel> CalculateClientCostAsync(ClientDataModel clientData)
         {
+            // Place holder values to retrieve electricity prices
             string productId = "AGILE-FLEX-22-11-25";
             string tariffCode = "E-1R-AGILE-FLEX-22-11-25-C";
             DateTime periodFrom = new(2023, 03, 26);
@@ -20,7 +24,7 @@ namespace Server.Services.DataCalculation
 
             try
             {
-                var data = await GetStandardUnitRates(productId, tariffCode, periodFrom, periodTo);
+                var data = await GetStandardRatesAsync(productId, tariffCode, periodFrom, periodTo);
 
                 return new ClientDataModel();
                 //TODO: Add logic for caulcating cost
@@ -32,12 +36,12 @@ namespace Server.Services.DataCalculation
             }
         }
 
-        public async Task<ElectricityDataResponse> GetStandardUnitRates(string productId, string tariffCode, DateTime periodFrom, DateTime periodTo)
+        public async Task<ElectricityDataResponse> GetStandardRatesAsync(string productId, string tariffCode, DateTime periodFrom, DateTime periodTo)
         {
             // Build URL
             string url = $"https://api.octopus.energy/v1/products/{productId}/electricity-tariffs/{tariffCode}/standard-unit-rates/?period_from={periodFrom:yyyy-MM-dd'T'HH:mm:ss}Z&period_to={periodTo:yyyy-MM-dd'T'HH:mm:ss}Z";
 
-            HttpResponseMessage response = await _httpClient.GetAsync(url);
+            var response = await _httpService.GetAsync(url);
 
             if (response.IsSuccessStatusCode)
             {

@@ -100,12 +100,12 @@ public class ServerController(FileFactory fileFacotry,
             return;
         }
 
-        var cost = await _dataCalculationService.CalculateClientCost(clientData);
+        var cost = await _dataCalculationService.CalculateClientCostAsync(clientData);
 
-        await ProcessClientDataToFile(clientData);
+        await ProcessClientDataToFileAsync(clientData);
     }
 
-    public async Task ProcessClientDataToFile(ClientDataModel clientData)
+    public async Task ProcessClientDataToFileAsync(ClientDataModel clientData)
     {
         var fileService = _fileFactory.CreateFileService(clientData!.Id, _fileRepository);
 

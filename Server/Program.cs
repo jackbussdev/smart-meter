@@ -3,6 +3,7 @@ using Server.Repositories.File;
 using Microsoft.Extensions.DependencyInjection;
 using Server.Controller.Server;
 using Server.Services.DataCalculation;
+using Server.Services.Http;
 
 internal class Program
 {
@@ -22,6 +23,8 @@ internal class Program
         services.AddSingleton<FileRepository>();
         services.AddSingleton<ServerController>();
         services.AddSingleton<HttpClient>();
+        services.AddSingleton<IHttpService, HttpService>();
+        
 
         return services.BuildServiceProvider();
     }
