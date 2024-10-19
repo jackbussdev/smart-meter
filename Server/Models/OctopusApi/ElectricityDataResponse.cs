@@ -1,4 +1,4 @@
-﻿namespace Server.Models.OctopusApiModel
+﻿namespace Server.Models.OctopusApi
 {
     public class ElectricityDataResponse
     {

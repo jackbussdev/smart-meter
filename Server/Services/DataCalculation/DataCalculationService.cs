@@ -1,6 +1,6 @@
 ﻿using Server.Models.Client;
 using Newtonsoft.Json;
-using Server.Models.OctopusApiModel;
+using Server.Models.OctopusApi;
 using Server.Services.Http;
 
 // https://learn.microsoft.com/en-us/dotnet/api/system.net.http.httpclient?view=net-8.0 - showed how to call external APIs in C#

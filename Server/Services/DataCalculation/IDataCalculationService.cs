@@ -1,5 +1,5 @@
 ﻿using Server.Models.Client;
-using Server.Models.OctopusApiModel;
+using Server.Models.OctopusApi;
 
 namespace Server.Services.DataCalculation
 {
