@@ -1,8 +1,4 @@
-using Client.Controllers.Communication;
-using Client.Models.Communication;
 using Client.ServiceManager.Interfaces.Controllers.Communication;
-using MindFusion.Gauges;
-using System.Data;
 
 namespace Client
 {
@@ -28,13 +24,14 @@ namespace Client
             green = today_Gauge.Scales[0].Ranges[0].Fill;
             amber = today_Gauge.Scales[0].Ranges[1].Fill;
             red = today_Gauge.Scales[0].Ranges[2].Fill;
-            readingController.SetClientDataModel(new()
-            {
-                Id = Random.Shared.Next(),
-                LocationId = 2,
-                ElectricityUsage = electricityUsageDec,
-                ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")
-            });
+
+            //readingController.SetClientDataModel(new()
+            //{
+            //    Id = Random.Shared.Next(),
+            //    LocationId = 2,
+            //    ElectricityUsage = electricityUsageDec,
+            //    ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")
+            //});
 
             #region GAUGE LOGIC
             today_Gauge.Scales[0].Ranges[0].MaxValue = electricityUsage;
