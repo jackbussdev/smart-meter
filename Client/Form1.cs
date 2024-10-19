@@ -21,14 +21,13 @@ namespace Client
 
             InitializeComponent();
 
-            Random rng = new Random();
-            electricityUsage = rng.Next(5, 30);
-            electricityUsageDec = Convert.ToDecimal(electricityUsage);
+            //Random rng = new Random();
+            //electricityUsage = rng.Next(5, 30);
+            //electricityUsageDec = Convert.ToDecimal(electricityUsage);
 
             green = today_Gauge.Scales[0].Ranges[0].Fill;
             amber = today_Gauge.Scales[0].Ranges[1].Fill;
             red = today_Gauge.Scales[0].Ranges[2].Fill;
-
             readingController.SetClientDataModel(new()
             {
                 Id = Random.Shared.Next(),
@@ -37,7 +36,7 @@ namespace Client
                 ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")
             });
 
-            readingController.SendReading();
+            //readingController.SendReading();
 
             #region GAUGE LOGIC
             today_Gauge.Scales[0].Ranges[0].MaxValue = electricityUsage;
@@ -71,20 +70,40 @@ namespace Client
 
         private void button2_Click(object sender, EventArgs e)
         {
-            readingController.SetClientDataModel(new()
-            {
-                Id = Random.Shared.Next(),
-                LocationId = 2,
-                ElectricityUsage = electricityUsageDec,
-                ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")
-            });
+            //readingController.SetClientDataModel(new()
+            //{
+            //    Id = Random.Shared.Next(),
+            //    LocationId = 2,
+            //    ElectricityUsage = electricityUsageDec,
+            //    ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")
+            //});
 
-            readingController.SendReading();
+            //readingController.SendReading();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            RichTextBox.CheckForIllegalCrossThreadCalls = false;
+            while (true)
+            {
+                Random rng = new Random();
+                electricityUsage = rng.Next(5, 30);
+                electricityUsageDec = Convert.ToDecimal(electricityUsage);
+
+                readingController.SetClientDataModel(new()
+                {
+                    Id = Random.Shared.Next(),
+                    LocationId = 2,
+                    ElectricityUsage = electricityUsageDec,
+                    ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")
+                });
+
+                readingController.SendReading();
+
+                RichTextBox.CheckForIllegalCrossThreadCalls = false;
+
+                Thread.Sleep(2000);
+            }
+    
         }
 
         private void label1_Click(object sender, EventArgs e)
