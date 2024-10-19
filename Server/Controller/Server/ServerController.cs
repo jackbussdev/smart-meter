@@ -26,24 +26,22 @@ public class ServerController(FileFactory fileFacotry, FileRepository fileReposi
     public async Task StartServer()
     {
         Console.WriteLine("Starting Server...\n");
+
         try
         {
-            // Handle the _server's ReceiveReady event
-            _server.ReceiveReady += async (sender, e) => await Server_ReceiveReady(sender, e);
-
-            _poller.Add(_server);
-
-            // Run the _poller asynchronously
-            _poller.RunAsync();
             _server.Bind("tcp://*:5556");
 
-            ValidationMessage = "Server successfully started!";
-            Console.WriteLine($"{ValidationMessage}\n");
+            _server.ReceiveReady += async (sender, e) => await Server_ReceiveReady(sender, e);
+
+            // Polling for incoming messages
+            _poller.Add(_server);
+            _poller.RunAsync();
+
+            Console.WriteLine("Server successfully started!");
         }
         catch (Exception ex)
         {
-            ValidationMessage = $"Server failed to start with error message {ex.Message}";
-            Console.WriteLine($"{ValidationMessage}\n");
+            Console.WriteLine($"Server failed to start with error message {ex.Message}");
         }
 
         Console.ReadLine();
@@ -77,17 +75,28 @@ public class ServerController(FileFactory fileFacotry, FileRepository fileReposi
 
     private async Task Server_ReceiveReady(object sender, NetMQSocketEventArgs e)
     {
-        string dataFromClient = e.Socket.ReceiveFrameString();
-        Console.WriteLine($"From Client: {dataFromClient}\n");
 
-        if (dataFromClient is null)
+        var serializedData = e.Socket.ReceiveFrameString();
+
+        Console.WriteLine($"From Client: {serializedData}\n");
+
+        if (serializedData is null)
         {
             ValidationMessage = "Error: Client data is empty...";
             Console.WriteLine($"{ValidationMessage}\n");
             return;
         }
 
-        await ProcessClientData(dataFromClient);
+        await ProcessClientData(serializedData);
+
+        
+        PriceCalculationModel pcm = new()
+        {
+            Cost = 20.00m
+        };
+
+        var serialisedPrice = JsonConvert.SerializeObject(pcm);
+        e.Socket.SendFrame(serialisedPrice); // THIS NEEDS TO RETURN THE CALCULATED GUBBINS
     }
 
     public async Task ProcessClientData(string dataFromClient)

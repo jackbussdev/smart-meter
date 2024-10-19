@@ -3,6 +3,7 @@ using NetMQ.Sockets;
 using Client.Models.Communication;
 using Newtonsoft.Json;
 using Client.ServiceManager.Interfaces.Controllers.Communication;
+using Client.Models;
 
 namespace Client.Controllers.Communication
 {
@@ -31,21 +32,23 @@ namespace Client.Controllers.Communication
 
         public void SendReading()
         {
+
             try
             {
+                using var client = _rs;
+                client.Connect("tcp://localhost:5556");
+
                 while (true)
                 {
-                    using var client = _rs;
-
-                    client.Connect("tcp://localhost:5556");
-                    var serialisedData = JsonConvert.SerializeObject(_clientDataModel);
-
-                    client.SendMoreFrame("").SendFrame(serialisedData);
-
+                    var serializedData = JsonConvert.SerializeObject(_clientDataModel);
+                    client.SendMoreFrame("").SendFrame(serializedData);
+                    var resp = client.ReceiveFrameString();
+                    var deserialised = JsonConvert.DeserializeObject<PriceCalculationModel>(resp);
+                    callbackToSetBox("This costed you " + (deserialised?.Cost.ToString() ?? "NO PRICE RETURNED"));
                     Thread.Sleep(3000);
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
