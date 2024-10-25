@@ -1,7 +1,5 @@
 ﻿using FluentAssertions;
 using Moq;
-using NetMQ;
-using Newtonsoft.Json;
 using Server.Controller.Server;
 using Server.Factories;
 using Server.Models.Client;

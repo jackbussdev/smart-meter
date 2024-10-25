@@ -88,7 +88,7 @@ public class ServerController(FileFactory fileFacotry,
 
         if (serializedData is null)
         {
-            ValidationMessage = "Error: Client data is empty...";
+            ValidationMessage = "Error: client data is empty...";
             Console.WriteLine($"{ValidationMessage}\n");
             return;
         }
@@ -101,20 +101,31 @@ public class ServerController(FileFactory fileFacotry,
             Cost = 20.00m
         };
 
-        var serialisedPrice = JsonConvert.SerializeObject(pcm);
-        e.Socket.SendFrame(serialisedPrice); // THIS NEEDS TO RETURN THE CALCULATED GUBBINS
+        var serialisedCost = JsonConvert.SerializeObject(pcm);
+
+        // Sends the cost back to the client
+        e.Socket.SendFrame(serialisedCost); 
     }
 
     public async Task ProcessClientData(string dataFromClient)
     {
         var clientData = JsonConvert.DeserializeObject<ClientDataModel>(dataFromClient);
 
-        if (!IsClientDataValid(clientData!))
+        if (!IsClientDataValid(clientData!) || clientData is null)
         {
             return;
         }
 
-        var cost = await _dataCalculationService.CalculateClientCostAsync(clientData);
+        var cost = await _dataCalculationService.GetClientCostAsync(clientData);
+
+        if (cost == 0)
+        {
+            ValidationMessage = "Error when calculating client electricity cost";
+            Console.WriteLine($"{ValidationMessage}\n");
+            return;
+        }
+
+        clientData.Cost = cost;
 
         await ProcessClientDataToFileAsync(clientData);
     }
