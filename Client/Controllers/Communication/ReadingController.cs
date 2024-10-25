@@ -54,7 +54,6 @@ namespace Client.Controllers.Communication
                     }
 
                     string cost = deserialised.Cost.ToString();
-                    //callbackToSetBox("This costed you " + (cost ?? "NO PRICE RETURNED"));
                     Thread.Sleep(2000);
                 }
             }
