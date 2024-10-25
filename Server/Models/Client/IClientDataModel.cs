@@ -13,7 +13,7 @@
         /// <summary>
         ///  Client Location Id
         /// </summary>
-        public int LocationId { get; set; } //to be enum maybe
+        public int LocationId { get; set; } 
 
         /// <summary>
         ///  Electricity Usage in kWh
@@ -21,13 +21,18 @@
         public decimal ElectricityUsage { get; set; }
 
         /// <summary>
-        /// Tarif
-        /// </summary>
-        //public Tarif Tarif { get; set; }
-
-        /// <summary>
         ///  Date and Time of client connection
         /// </summary>
         public string ConnectionDateAndTime { get; set; }
+
+        /// <summary>
+        ///  Cost of electricity
+        /// </summary>
+        public decimal Cost { get; set; }
+
+        /// <summary>
+        ///  Tarif
+        /// </summary>
+        public string Tariff { get; set; }
     }
 }

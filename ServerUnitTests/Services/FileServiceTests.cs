@@ -4,7 +4,7 @@ using Server.Models.Client;
 using Server.Services.File;
 using Server.Repositories.File;
 
-namespace Server.UnitTests.Services
+namespace ServerUnitTests.Services
 {
     public class FileServiceTests : IDisposable
     {
