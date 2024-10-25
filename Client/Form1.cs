@@ -16,6 +16,14 @@ namespace Client
             readingController = rc;
 
             InitializeComponent();
+            //---------------------------------------------------------
+            //---------------------------------------------------------
+            //  Left comments under hear for Todd or Jack if needed
+            //
+            //                   If not just get rid
+            //---------------------------------------------------------
+            //---------------------------------------------------------
+
 
             //Random rng = new Random();
             //electricityUsage = rng.Next(5, 30);
@@ -68,15 +76,7 @@ namespace Client
 
         private void button2_Click(object sender, EventArgs e)
         {
-            //readingController.SetClientDataModel(new()
-            //{
-            //    Id = Random.Shared.Next(),
-            //    LocationId = 2,
-            //    ElectricityUsage = electricityUsageDec,
-            //    ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")
-            //});
-
-            //readingController.SendReading();
+           
         }
 
         private void Form1_Load(object sender, EventArgs e)
