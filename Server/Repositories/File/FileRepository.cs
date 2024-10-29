@@ -8,10 +8,10 @@ namespace Server.Repositories.File
 {
     public class FileRepository : IFileRepository
     {
-        public List<ClientDataModel> _clientDataList = [];
-
         public virtual async Task WriteDataAsync(string file, ClientDataModel clientData)
         {
+            var _clientDataList = new List<ClientDataModel>();
+
             if (System.IO.File.Exists(file))
             {
                 _clientDataList = await ReadDataAsync(file);

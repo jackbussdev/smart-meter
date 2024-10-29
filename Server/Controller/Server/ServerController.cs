@@ -4,19 +4,25 @@ using Newtonsoft.Json;
 using Server.Factories;
 using Server.Models.Client;
 using Server.Repositories.File;
+using Server.Services.DataCalculation;
 
 // https://zeromq.org/languages/csharp/ - Tought the basics of how to allow communication between clients 
 // and servers using ZeroMQ in C#
 
 namespace Server.Controller.Server;
 
-public class ServerController(FileFactory fileFacotry, FileRepository fileRepository)
+public class ServerController(FileFactory fileFacotry, 
+    FileRepository fileRepository, 
+    DataCalculationService dataCalculationService)
 {
-    private readonly FileFactory _fileFactory = fileFacotry ??
-                throw new ArgumentNullException(nameof(fileFacotry));
+    private readonly FileFactory _fileFactory = fileFacotry 
+        ?? throw new ArgumentNullException(nameof(fileFacotry));
 
-    private readonly FileRepository _fileRepository = fileRepository ??
-                throw new ArgumentNullException(nameof(fileRepository));
+    private readonly FileRepository _fileRepository = fileRepository 
+        ?? throw new ArgumentNullException(nameof(fileRepository));
+
+    private readonly DataCalculationService _dataCalculationService = dataCalculationService
+        ?? throw new ArgumentNullException(nameof(dataCalculationService));
 
     private NetMQPoller _poller = [];
     private ResponseSocket _server = new();
@@ -73,7 +79,7 @@ public class ServerController(FileFactory fileFacotry, FileRepository fileReposi
         return true;
     }
 
-    private async Task Server_ReceiveReady(object sender, NetMQSocketEventArgs e)
+    public async Task Server_ReceiveReady(object sender, NetMQSocketEventArgs e)
     {
 
         var serializedData = e.Socket.ReceiveFrameString();
@@ -82,7 +88,7 @@ public class ServerController(FileFactory fileFacotry, FileRepository fileReposi
 
         if (serializedData is null)
         {
-            ValidationMessage = "Error: Client data is empty...";
+            ValidationMessage = "Error: client data is empty...";
             Console.WriteLine($"{ValidationMessage}\n");
             return;
         }
@@ -95,19 +101,37 @@ public class ServerController(FileFactory fileFacotry, FileRepository fileReposi
             Cost = 20.00m
         };
 
-        var serialisedPrice = JsonConvert.SerializeObject(pcm);
-        e.Socket.SendFrame(serialisedPrice); // THIS NEEDS TO RETURN THE CALCULATED GUBBINS
+        var serialisedCost = JsonConvert.SerializeObject(pcm);
+
+        // Sends the cost back to the client
+        e.Socket.SendFrame(serialisedCost); 
     }
 
     public async Task ProcessClientData(string dataFromClient)
     {
         var clientData = JsonConvert.DeserializeObject<ClientDataModel>(dataFromClient);
 
-        if (!IsClientDataValid(clientData!))
+        if (!IsClientDataValid(clientData!) || clientData is null)
         {
             return;
         }
 
+        var cost = await _dataCalculationService.GetClientCostAsync(clientData);
+
+        if (cost == 0)
+        {
+            ValidationMessage = "Error when calculating client electricity cost";
+            Console.WriteLine($"{ValidationMessage}\n");
+            return;
+        }
+
+        clientData.Cost = cost;
+
+        await ProcessClientDataToFileAsync(clientData);
+    }
+
+    public async Task ProcessClientDataToFileAsync(ClientDataModel clientData)
+    {
         var fileService = _fileFactory.CreateFileService(clientData!.Id, _fileRepository);
 
         await fileService.WriteDataAsync(clientData);

@@ -1,11 +1,12 @@
 ﻿using FluentAssertions;
 using Moq;
-using Newtonsoft.Json;
 using Server.Controller.Server;
 using Server.Factories;
 using Server.Models.Client;
 using Server.Repositories.File;
+using Server.Services.DataCalculation;
 using Server.Services.File;
+using Server.Services.Http;
 
 namespace ServerUnitTests.Controller
 {
@@ -13,7 +14,9 @@ namespace ServerUnitTests.Controller
     {
         private readonly Mock<FileFactory> _fileFactoryMock = new();
         private readonly Mock<FileRepository> _fileRepositoryMock = new();
+        private readonly Mock<HttpClient> _httpClientMock = new();
         private readonly Mock<IFileService> _fileServiceMock = new();
+        private readonly Mock<IHttpService> _httpServiceMock = new();
 
         private readonly ClientDataModel _clientData;
 
@@ -32,7 +35,8 @@ namespace ServerUnitTests.Controller
         public void IsClientDataValid_With_Valid_Data_Returns_True()
         {
             // Arrange
-            var controller = new ServerController(_fileFactoryMock.Object, _fileRepositoryMock.Object);
+            var dataCalculationServiceMock = new DataCalculationService(_httpServiceMock.Object);
+            var controller = new ServerController(_fileFactoryMock.Object, _fileRepositoryMock.Object, dataCalculationServiceMock);
 
             // Act
             var result = controller.IsClientDataValid(_clientData);
@@ -46,7 +50,9 @@ namespace ServerUnitTests.Controller
         public void IsClientDataValid_With_Zero_Id_Returns_False()
         {
             // Arrange
-            var controller = new ServerController(_fileFactoryMock.Object, _fileRepositoryMock.Object);
+            var dataCalculationServiceMock = new DataCalculationService(_httpServiceMock.Object);
+            var controller = new ServerController(_fileFactoryMock.Object, _fileRepositoryMock.Object, dataCalculationServiceMock);
+
             var clientData = new ClientDataModel
             {
                 Id = 0,
@@ -67,7 +73,9 @@ namespace ServerUnitTests.Controller
         public void IsClientDataValid_With_Zero_Loation_Id_Returns_False()
         {
             // Arrange
-            var controller = new ServerController(_fileFactoryMock.Object, _fileRepositoryMock.Object);
+            var dataCalculationServiceMock = new DataCalculationService(_httpServiceMock.Object);
+            var controller = new ServerController(_fileFactoryMock.Object, _fileRepositoryMock.Object, dataCalculationServiceMock);
+
             var clientData = new ClientDataModel
             {
                 Id = 1,
@@ -88,7 +96,9 @@ namespace ServerUnitTests.Controller
         public void IsClientDataValid_With_Empty_Connection_Date_And_Time_Returns_False_And_Error()
         {
             // Arrange
-            var controller = new ServerController(_fileFactoryMock.Object, _fileRepositoryMock.Object);
+            var dataCalculationServiceMock = new DataCalculationService(_httpServiceMock.Object);
+            var controller = new ServerController(_fileFactoryMock.Object, _fileRepositoryMock.Object, dataCalculationServiceMock);
+
             var clientData = new ClientDataModel
             {
                 Id = 1,
@@ -106,10 +116,11 @@ namespace ServerUnitTests.Controller
         }
 
         [Fact]
-        public async Task ProcessClientData_Calls_File_Factory_And_File_Service()
+        public async Task ProcessClientDataToFileAsync_Calls_File_Factory_And_File_Service()
         {
             // Arrange
-            var controller = new ServerController(_fileFactoryMock.Object, _fileRepositoryMock.Object);
+            var dataCalculationServiceMock = new DataCalculationService(_httpServiceMock.Object);
+            var controller = new ServerController(_fileFactoryMock.Object, _fileRepositoryMock.Object, dataCalculationServiceMock);
 
             var validClientData = new ClientDataModel
             {
@@ -118,7 +129,6 @@ namespace ServerUnitTests.Controller
                 ElectricityUsage = 3,
                 ConnectionDateAndTime = "2024-10-02"
             };
-            var clientDataAsString = JsonConvert.SerializeObject(validClientData);
 
             // Set up the file factory mock to return the file service mock
             _fileFactoryMock
@@ -126,7 +136,7 @@ namespace ServerUnitTests.Controller
                 .Returns(_fileServiceMock.Object);
 
             // Act
-            await controller.ProcessClientData(clientDataAsString);
+            await controller.ProcessClientDataToFileAsync(validClientData);
 
             // Assert
             _fileFactoryMock.Verify(x => x.CreateFileService(It.IsAny<int>(), It.IsAny<FileRepository>()), Times.Once);

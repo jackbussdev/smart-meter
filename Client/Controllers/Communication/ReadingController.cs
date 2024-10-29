@@ -9,13 +9,14 @@ namespace Client.Controllers.Communication
 {
     public class ReadingController : IReadingController
     {
-        private DealerSocket _rs;
-
+        private RequestSocket _rs;
         private RichTextBox _richTextBox;
         private ClientDataModel _clientDataModel;
         private Action<string> callbackToSetBox;
 
-        public ReadingController(DealerSocket socket)
+        public string? ValidationMessage { get; set; }
+
+        public ReadingController(RequestSocket socket)
         {
             _rs = socket;
         }
@@ -41,11 +42,19 @@ namespace Client.Controllers.Communication
                 while (true)
                 {
                     var serializedData = JsonConvert.SerializeObject(_clientDataModel);
-                    client.SendMoreFrame("").SendFrame(serializedData);
+                    client.SendFrame(serializedData);
                     var resp = client.ReceiveFrameString();
                     var deserialised = JsonConvert.DeserializeObject<PriceCalculationModel>(resp);
-                    callbackToSetBox("This costed you " + (deserialised?.Cost.ToString() ?? "NO PRICE RETURNED"));
-                    Thread.Sleep(3000);
+
+                    if (deserialised is null)
+                    {
+                        ValidationMessage = "Error when receiving cost from server";
+                        Console.WriteLine(ValidationMessage);
+                        return;
+                    }
+
+                    string cost = deserialised.Cost.ToString();
+                    Thread.Sleep(2000);
                 }
             }
             catch (Exception ex)
