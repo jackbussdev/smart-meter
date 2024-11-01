@@ -5,11 +5,11 @@ namespace Client
     public partial class Form1 : Form
     {
         IReadingController readingController;
-        float electricityUsage;
-        decimal electricityUsageDec;
         MindFusion.Drawing.Brush green;
         MindFusion.Drawing.Brush amber;
         MindFusion.Drawing.Brush red;
+        private float electricityUsage;
+        private decimal electricityUsageDec;
 
         public Form1(IReadingController rc)
         {
@@ -61,6 +61,11 @@ namespace Client
             readingController.SendReading();
         }
 
+        public void rc_ReadingSent(object sender, EventArgs e)
+        {
+            electricityUsage = readingController.getElectricityUsage();
+        }
+
         public void receivedReading(string reading)
         {
             richTextBox1.AppendText(reading);
@@ -68,10 +73,7 @@ namespace Client
 
         private void button1_Click(object sender, EventArgs e)
         {
-            readingController.SetRichTextBox(receivedReading);
-
-            Thread t = new Thread(new ThreadStart(readingController.SendReading));
-            t.Start();
+            
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -81,24 +83,34 @@ namespace Client
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            while (true)
-            {
-                Random rng = new Random();
-                electricityUsage = rng.Next(5, 30);
-                electricityUsageDec = Convert.ToDecimal(electricityUsage);
 
-                readingController.SetClientDataModel(new()
-                {
-                    Id = Random.Shared.Next(),
-                    LocationId = 2,
-                    ElectricityUsage = electricityUsageDec,
-                    ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")
-                });
+            RichTextBox.CheckForIllegalCrossThreadCalls = false;
 
-            readingController.SendReading();
+            readingController.ReadingSent += rc_ReadingSent!;
+
+            readingController.SetRichTextBox(receivedReading);
+
+            Thread t = new Thread(new ThreadStart(readingController.SendReading));
+            t.Start();
+
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void ovalGauge1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void clock_Tmr_Tick(object sender, EventArgs e)
         {
             timer_Lbl.Text = DateTime.Now.Hour.ToString() + ":" + DateTime.Now.Minute.ToString();
         }

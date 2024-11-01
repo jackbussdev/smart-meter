@@ -4,6 +4,9 @@ namespace Client.ServiceManager.Interfaces.Controllers.Communication
 {
     public interface IReadingController
     {
+
+        public event EventHandler ReadingSent;
+
         /// <summary>
         /// Sends the reading to the server, to be used by the thread manager to run asynchronously.
         /// </summary>
@@ -20,5 +23,7 @@ namespace Client.ServiceManager.Interfaces.Controllers.Communication
         /// </summary>
         /// <param name="callback">Usually a RichTextBox</param>
         public void SetRichTextBox(Action<string> callback);
+
+        public float getElectricityUsage();
     }
 }
