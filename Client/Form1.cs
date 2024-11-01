@@ -1,4 +1,5 @@
 using Client.ServiceManager.Interfaces.Controllers.Communication;
+using System.Linq.Expressions;
 
 namespace Client
 {
@@ -10,6 +11,8 @@ namespace Client
         MindFusion.Drawing.Brush red;
         private float electricityUsage;
         private decimal electricityUsageDec;
+
+        Thread t;
 
         public Form1(IReadingController rc)
         {
@@ -41,6 +44,15 @@ namespace Client
             //    ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")
             //});
 
+            //readingController.SendReading();
+
+
+        }
+
+        public void rc_ReadingSent(object sender, EventArgs e)
+        {
+            electricityUsage = readingController.getElectricityUsage();
+
             #region GAUGE LOGIC
             today_Gauge.Scales[0].Ranges[0].MaxValue = electricityUsage;
             today_Gauge.Scales[0].Pointers[0].Value = electricityUsage;
@@ -58,12 +70,6 @@ namespace Client
             }
             #endregion
 
-            readingController.SendReading();
-        }
-
-        public void rc_ReadingSent(object sender, EventArgs e)
-        {
-            electricityUsage = readingController.getElectricityUsage();
         }
 
         public void receivedReading(string reading)
@@ -73,12 +79,12 @@ namespace Client
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-           
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -90,9 +96,16 @@ namespace Client
 
             readingController.SetRichTextBox(receivedReading);
 
-            Thread t = new Thread(new ThreadStart(readingController.SendReading));
+            t = new Thread(new ThreadStart(readingController.SendReading));
+
+            t.IsBackground = true;
+
             t.Start();
 
+        }
+
+        void Form_FormClosing(object sender, FormClosingEventArgs e)
+        {
         }
 
         private void label1_Click(object sender, EventArgs e)
