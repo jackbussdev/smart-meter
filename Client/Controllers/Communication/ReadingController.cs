@@ -9,16 +9,27 @@ namespace Client.Controllers.Communication
 {
     public class ReadingController : IReadingController
     {
+        public event EventHandler ReadingSent;
+
         private RequestSocket _rs;
         private RichTextBox _richTextBox;
         private ClientDataModel _clientDataModel;
         private Action<string> callbackToSetBox;
+
+
+        public float electricityUsage { get; private set; }
+        public decimal electricityUsageDec { get; private set; }
 
         public string? ValidationMessage { get; set; }
 
         public ReadingController(RequestSocket socket)
         {
             _rs = socket;
+        }
+
+        public float getElectricityUsage()
+        {
+            return this.electricityUsage;
         }
 
         public void SetClientDataModel(ClientDataModel cdm)
@@ -34,6 +45,8 @@ namespace Client.Controllers.Communication
         public void SendReading()
         {
 
+            Random rng = new Random();
+
             try
             {
                 using var client = _rs;
@@ -41,6 +54,20 @@ namespace Client.Controllers.Communication
 
                 while (true)
                 {
+
+                    electricityUsage = rng.Next(5, 30);
+                    electricityUsageDec = Convert.ToDecimal(electricityUsage);
+
+                    ReadingSent.Invoke(this, EventArgs.Empty);
+
+                    this.SetClientDataModel(new()
+                    {
+                        Id = Random.Shared.Next(),
+                        LocationId = 2,
+                        ElectricityUsage = electricityUsageDec,
+                        ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")
+                    });
+
                     var serializedData = JsonConvert.SerializeObject(_clientDataModel);
                     client.SendFrame(serializedData);
                     var resp = client.ReceiveFrameString();
