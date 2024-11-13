@@ -31,6 +31,7 @@ namespace Client
             {
                 services.AddSingleton<IReadingController, ReadingController>(
                     serviceProvider => new ReadingController(rs));
+                services.AddSingleton<IMessageController, MessageController>();
                 services.AddTransient<Form1>();
             });
         }

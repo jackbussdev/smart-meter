@@ -25,5 +25,7 @@ namespace Client.ServiceManager.Interfaces.Controllers.Communication
         public void SetRichTextBox(Action<string> callback);
 
         public float getElectricityUsage();
+
+        public string getMessage();
     }
 }

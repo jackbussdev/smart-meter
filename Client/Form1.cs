@@ -11,6 +11,7 @@ namespace Client
         MindFusion.Drawing.Brush red;
         private float electricityUsage;
         private decimal electricityUsageDec;
+        private string currentMessage;
 
         Thread t;
 
@@ -52,6 +53,7 @@ namespace Client
         public void rc_ReadingSent(object sender, EventArgs e)
         {
             electricityUsage = readingController.getElectricityUsage();
+            currentMessage = readingController.getMessage();
 
             #region GAUGE LOGIC
             today_Gauge.Scales[0].Ranges[0].MaxValue = electricityUsage;
@@ -69,6 +71,8 @@ namespace Client
                 today_Gauge.Scales[0].Ranges[0].Fill = green;
             }
             #endregion
+
+            lblMsgCentreContent.Text = currentMessage;
 
         }
 
@@ -89,17 +93,22 @@ namespace Client
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            // Allow cross threading calls to manipulate the richtextbox
             RichTextBox.CheckForIllegalCrossThreadCalls = false;
-
+            
+            // set listener function for when the reading is sent
             readingController.ReadingSent += rc_ReadingSent!;
 
+            // set the callback function for rich text box to pass from RC to frontend
             readingController.SetRichTextBox(receivedReading);
 
+            // assign the thread
             t = new Thread(new ThreadStart(readingController.SendReading));
 
+            // set the thread to run in background so when main thread is killed, so is this
             t.IsBackground = true;
 
+            // start the thread
             t.Start();
 
         }
