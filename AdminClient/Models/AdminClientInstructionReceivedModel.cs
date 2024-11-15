@@ -8,7 +8,7 @@ namespace AdminClient.Models
 {
     internal class AdminClientInstructionReceivedModel
     {
-        public string TargetRegion { get; set; } = string.Empty;
-        public bool MessageReceived { get; set; }
+        public string Action { get; set; }
+        public object Data { get; set; }
     }
 }

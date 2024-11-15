@@ -142,18 +142,21 @@ public class ServerController(FileFactory fileFacotry,
             return;
         }
 
-        AdminClientInstructionModel acim = JsonConvert.DeserializeObject<AdminClientInstructionModel>(serializedData)!;
+        //AdminClientInstructionModel acim = JsonConvert.DeserializeObject<AdminClientInstructionModel>(serializedData)!;
+
+        dynamic acim = JsonConvert.DeserializeObject(serializedData)!;
 
         messages.Append(new() // append new messagemodel to messages queue
         {
-            Region = acim.TargetArea,
-            MessageContent = acim.Message
+            Region = acim.data.region,
+            MessageContent = acim.data.message
         });
 
         AdminClientInstructionReceivedModel acirm = new()
         {
-            TargetRegion = acim.TargetArea,
-            MessageReceived = true
+            Action = acim.action,
+            Data = acim.data
+
         };
 
         var acirmToReturn = JsonConvert.SerializeObject(acirm);
