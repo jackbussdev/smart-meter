@@ -28,47 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
-            tabControl1 = new TabControl();
-            tabPage1 = new TabPage();
             tabPage2 = new TabPage();
             groupBox1 = new GroupBox();
             tbMessageContent = new TextBox();
             label1 = new Label();
-            cbMessageTargetRegion = new ComboBox();
             label2 = new Label();
+            cbMessageTargetRegion = new ComboBox();
             button1 = new Button();
-            tabControl1.SuspendLayout();
+            tabControl1 = new TabControl();
             tabPage2.SuspendLayout();
             groupBox1.SuspendLayout();
+            tabControl1.SuspendLayout();
             SuspendLayout();
-            // 
-            // tabControl1
-            // 
-            tabControl1.Controls.Add(tabPage1);
-            tabControl1.Controls.Add(tabPage2);
-            tabControl1.Location = new Point(12, 12);
-            tabControl1.Name = "tabControl1";
-            tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(1334, 511);
-            tabControl1.TabIndex = 0;
-            // 
-            // tabPage1
-            // 
-            tabPage1.Location = new Point(4, 34);
-            tabPage1.Name = "tabPage1";
-            tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(1326, 473);
-            tabPage1.TabIndex = 0;
-            tabPage1.Text = "Smart Meter Enrolment";
-            tabPage1.UseVisualStyleBackColor = true;
             // 
             // tabPage2
             // 
             tabPage2.Controls.Add(groupBox1);
-            tabPage2.Location = new Point(4, 34);
+            tabPage2.Location = new Point(4, 24);
+            tabPage2.Margin = new Padding(2);
             tabPage2.Name = "tabPage2";
-            tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(1326, 473);
+            tabPage2.Padding = new Padding(2);
+            tabPage2.Size = new Size(245, 279);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Message Centre";
             tabPage2.UseVisualStyleBackColor = true;
@@ -80,69 +60,87 @@
             groupBox1.Controls.Add(label2);
             groupBox1.Controls.Add(label1);
             groupBox1.Controls.Add(tbMessageContent);
-            groupBox1.Location = new Point(6, 6);
+            groupBox1.Location = new Point(4, 4);
+            groupBox1.Margin = new Padding(2);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(325, 261);
+            groupBox1.Padding = new Padding(2);
+            groupBox1.Size = new Size(228, 157);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Message Sending";
             // 
             // tbMessageContent
             // 
-            tbMessageContent.Location = new Point(6, 160);
+            tbMessageContent.Location = new Point(4, 96);
+            tbMessageContent.Margin = new Padding(2);
             tbMessageContent.Name = "tbMessageContent";
-            tbMessageContent.Size = new Size(304, 31);
+            tbMessageContent.Size = new Size(214, 23);
             tbMessageContent.TabIndex = 0;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(6, 38);
+            label1.Location = new Point(4, 23);
+            label1.Margin = new Padding(2, 0, 2, 0);
             label1.Name = "label1";
-            label1.Size = new Size(67, 25);
+            label1.Size = new Size(44, 15);
             label1.TabIndex = 1;
             label1.Text = "Region";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(4, 79);
+            label2.Margin = new Padding(2, 0, 2, 0);
+            label2.Name = "label2";
+            label2.Size = new Size(99, 15);
+            label2.TabIndex = 1;
+            label2.Text = "Message Content";
             // 
             // cbMessageTargetRegion
             // 
             cbMessageTargetRegion.FormattingEnabled = true;
             cbMessageTargetRegion.Items.AddRange(new object[] { "GLOBAL" });
-            cbMessageTargetRegion.Location = new Point(6, 74);
+            cbMessageTargetRegion.Location = new Point(4, 44);
+            cbMessageTargetRegion.Margin = new Padding(2);
             cbMessageTargetRegion.Name = "cbMessageTargetRegion";
-            cbMessageTargetRegion.Size = new Size(304, 33);
+            cbMessageTargetRegion.Size = new Size(214, 23);
             cbMessageTargetRegion.TabIndex = 2;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(6, 132);
-            label2.Name = "label2";
-            label2.Size = new Size(150, 25);
-            label2.TabIndex = 1;
-            label2.Text = "Message Content";
             // 
             // button1
             // 
-            button1.Location = new Point(6, 208);
+            button1.Location = new Point(4, 125);
+            button1.Margin = new Padding(2);
             button1.Name = "button1";
-            button1.Size = new Size(304, 34);
+            button1.Size = new Size(213, 20);
             button1.TabIndex = 3;
             button1.Text = "Send Message";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
+            // tabControl1
+            // 
+            tabControl1.Controls.Add(tabPage2);
+            tabControl1.Location = new Point(8, 7);
+            tabControl1.Margin = new Padding(2);
+            tabControl1.Name = "tabControl1";
+            tabControl1.SelectedIndex = 0;
+            tabControl1.Size = new Size(253, 307);
+            tabControl1.TabIndex = 0;
+            // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1358, 535);
+            ClientSize = new Size(267, 321);
             Controls.Add(tabControl1);
+            Margin = new Padding(2, 2, 2, 2);
             Name = "Form1";
             Text = "Form1";
-            tabControl1.ResumeLayout(false);
             tabPage2.ResumeLayout(false);
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            tabControl1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -157,5 +155,10 @@
         private Label label1;
         private TextBox tbMessageContent;
         private Button button1;
+        private GroupBox groupBox2;
+        private DataGridView dataGridView1;
+        private DataGridViewTextBoxColumn Region;
+        private DataGridViewTextBoxColumn Message;
+        private Button btnDeleteMessage;
     }
 }

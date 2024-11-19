@@ -91,7 +91,9 @@ namespace Client.Controllers.Communication
 
                     string cost = deserialised.Cost.ToString(); // this is the cost
                     currentStatusMessage = deserialised.Message.MessageContent;
-                    Thread.Sleep(2000); // TODO: RNG for the sending functionality
+
+                    var sleepFor = rng.Next(15, 60); // sleep for rng between 15 and 60 secs
+                    Thread.Sleep(sleepFor); // Meet criteria for assignment
                 }
             }
             catch (Exception ex)

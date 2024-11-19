@@ -29,6 +29,7 @@ public class ServerController(FileFactory fileFacotry,
     private ResponseSocket _server = new();
 
     private List<MessageModel> messages = new List<MessageModel>();
+    private MessageModel message;
 
     private ResponseSocket _instructionalServer = new();
 
@@ -59,11 +60,11 @@ public class ServerController(FileFactory fileFacotry,
             Console.WriteLine($"Server(s) failed to start with error message {ex.Message}");
         }
 
-        messages.Add(new()
+        /*messages.Add(new()
         {
             MessageContent = "boutonnn",
             Region = "GLOBAL"
-        });
+        });*/
 
         Console.ReadLine();
     }
@@ -110,8 +111,10 @@ public class ServerController(FileFactory fileFacotry,
 
         await ProcessClientData(serializedData);
 
-        var msg = messages.First();
-        
+        //var msg = messages.Count() > 0 ? messages.First() : new();
+
+        var msg = message;
+
         PriceCalculationModel pcm = new()
         {
             Cost = 20.00m,
@@ -146,11 +149,11 @@ public class ServerController(FileFactory fileFacotry,
 
         dynamic acim = JsonConvert.DeserializeObject(serializedData)!;
 
-        messages.Append(new() // append new messagemodel to messages queue
+        message = new() // append new messagemodel to messages queue
         {
             Region = acim.data.region,
             MessageContent = acim.data.message
-        });
+        };
 
         AdminClientInstructionReceivedModel acirm = new()
         {

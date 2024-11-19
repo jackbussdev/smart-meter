@@ -25,6 +25,7 @@ namespace AdminClient
             ApplicationConfiguration.Initialize();
             var host = CreateHostBuilder().Build();
             _serviceProvider = host.Services;
+            rs.Connect("tcp://localhost:5557"); // TODO: domain potentially?
             Application.Run(_serviceProvider.GetRequiredService<Form1>());
         }
 

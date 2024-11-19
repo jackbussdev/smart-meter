@@ -37,14 +37,15 @@ namespace AdminClient.Controllers
 
             try
             {
-                using var client = _rs;
-                client.Connect("tcp://localhost:5557"); // TODO: domain potentially?
+                //using var client = _rs;
+                //client.Connect("tcp://localhost:5557"); // TODO: domain potentially?
 
+                var client = _rs;
 
                 var serializedData = JsonConvert.SerializeObject(message); // make it JSON
                 client.SendFrame(serializedData); // send the data to 0MQ Server
                 var resp = client.ReceiveFrameString(); // Await the received
-                dynamic deserialised = JsonConvert.DeserializeObject<AdminClientInstructionReceivedModel>(resp); // deserialise as a ACIRM
+                dynamic deserialised = JsonConvert.DeserializeObject<AdminClientInstructionReceivedModel>(resp)!; // deserialise as a ACIRM
 
                 if (deserialised is null) // catch when not there
                 {

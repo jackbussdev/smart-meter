@@ -21,5 +21,12 @@ namespace AdminClient
                 MessageBody = tbMessageContent.Text
             });
         }
+
+        private void btnDeleteMessage_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
     }
 }
