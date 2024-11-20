@@ -17,11 +17,6 @@ namespace AdminClient
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
-            //ApplicationConfiguration.Initialize();
-            //Application.Run(new Form1());
-
             ApplicationConfiguration.Initialize();
             var host = CreateHostBuilder().Build();
             _serviceProvider = host.Services;
@@ -33,9 +28,6 @@ namespace AdminClient
         {
             return Host.CreateDefaultBuilder().ConfigureServices((context, services) =>
             {
-                /*services.AddSingleton<IReadingController, ReadingController>(
-                    serviceProvider => new ReadingController(rs));
-                services.AddSingleton<IMessageController, MessageController>();*/
                 services.AddSingleton<IInstructionController, InstructionController>(
                     serviceProvider => new InstructionController(rs));
                 services.AddTransient<Form1>();

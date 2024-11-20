@@ -37,8 +37,6 @@ namespace AdminClient.Controllers
 
             try
             {
-                //using var client = _rs;
-                //client.Connect("tcp://localhost:5557"); // TODO: domain potentially?
 
                 var client = _rs;
 
@@ -71,8 +69,6 @@ namespace AdminClient.Controllers
                     default:
                         break;
                 }
-
-                //Console.Write(deserialised.GetType().GetProperty("");
 
             }
             catch (Exception ex)

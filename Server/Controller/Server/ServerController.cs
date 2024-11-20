@@ -28,7 +28,6 @@ public class ServerController(FileFactory fileFacotry,
     private NetMQPoller _poller = [];
     private ResponseSocket _server = new();
 
-    private List<MessageModel> messages = new List<MessageModel>();
     private MessageModel message;
 
     private ResponseSocket _instructionalServer = new();
@@ -59,12 +58,6 @@ public class ServerController(FileFactory fileFacotry,
         {
             Console.WriteLine($"Server(s) failed to start with error message {ex.Message}");
         }
-
-        /*messages.Add(new()
-        {
-            MessageContent = "boutonnn",
-            Region = "GLOBAL"
-        });*/
 
         Console.ReadLine();
     }
@@ -111,8 +104,6 @@ public class ServerController(FileFactory fileFacotry,
 
         await ProcessClientData(serializedData);
 
-        //var msg = messages.Count() > 0 ? messages.First() : new();
-
         var msg = message;
 
         PriceCalculationModel pcm = new()
@@ -145,11 +136,9 @@ public class ServerController(FileFactory fileFacotry,
             return;
         }
 
-        //AdminClientInstructionModel acim = JsonConvert.DeserializeObject<AdminClientInstructionModel>(serializedData)!;
-
         dynamic acim = JsonConvert.DeserializeObject(serializedData)!;
 
-        message = new() // append new messagemodel to messages queue
+        message = new() // set new messagemodel to messages queue
         {
             Region = acim.data.region,
             MessageContent = acim.data.message
