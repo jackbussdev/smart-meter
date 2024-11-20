@@ -1,5 +1,6 @@
 ﻿using AdminClient.Models;
 using AdminClient.Models.Instructions;
+using AdminClient.ServiceManager.Events;
 using AdminClient.ServiceManager.Interfaces.Controllers;
 using NetMQ;
 using NetMQ.Sockets;
@@ -14,6 +15,7 @@ namespace AdminClient.Controllers
 {
     internal class InstructionController : IInstructionController
     {
+        public event EventHandler<InstructionFailSendEventArgs> InstructionFailed;
 
         public RequestSocket _rs;
 
@@ -73,7 +75,12 @@ namespace AdminClient.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                InstructionFailedError ife = new()
+                {
+                    ExceptionMessage = ex.Message
+                };
+
+                InstructionFailed?.Invoke(this, new(ife));
             }
 
 

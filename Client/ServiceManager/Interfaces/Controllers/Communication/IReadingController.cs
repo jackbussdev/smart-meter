@@ -5,6 +5,9 @@ namespace Client.ServiceManager.Interfaces.Controllers.Communication
     public interface IReadingController
     {
 
+        /// <summary>
+        /// EventHandler fired when reading is sent
+        /// </summary>
         public event EventHandler ReadingSent;
 
         /// <summary>
