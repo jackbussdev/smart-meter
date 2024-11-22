@@ -9,5 +9,6 @@ namespace Client.Models
     internal class PriceCalculationModel
     {
         public decimal Cost { get; set; }
+        public Models.Communication.Message Message { get; set; }
     }
 }

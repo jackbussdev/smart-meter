@@ -2,6 +2,7 @@
 using NetMQ.Sockets;
 using Newtonsoft.Json;
 using Server.Factories;
+using Server.Models;
 using Server.Models.Client;
 using Server.Repositories.File;
 using Server.Services.DataCalculation;
@@ -27,6 +28,10 @@ public class ServerController(FileFactory fileFacotry,
     private NetMQPoller _poller = [];
     private ResponseSocket _server = new();
 
+    private MessageModel message;
+
+    private ResponseSocket _instructionalServer = new();
+
     public string? ValidationMessage { get; set; }
 
     public async Task StartServer()
@@ -37,17 +42,21 @@ public class ServerController(FileFactory fileFacotry,
         {
             _server.Bind("tcp://*:5556");
 
-            _server.ReceiveReady += async (sender, e) => await Server_ReceiveReady(sender, e);
+            _server.ReceiveReady += async (sender, e) => await Server_ReceiveReady(sender!, e);
+
+            _instructionalServer.Bind("tcp://*:5557");
+            _instructionalServer.ReceiveReady += async (sender, e) => await InsServer_ReceiveReady(sender!, e);
 
             // Polling for incoming messages
             _poller.Add(_server);
+            _poller.Add(_instructionalServer);
             _poller.RunAsync();
 
-            Console.WriteLine("Server successfully started!");
+            Console.WriteLine("Server(s) successfully started!");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Server failed to start with error message {ex.Message}");
+            Console.WriteLine($"Server(s) failed to start with error message {ex.Message}");
         }
 
         Console.ReadLine();
@@ -95,16 +104,57 @@ public class ServerController(FileFactory fileFacotry,
 
         await ProcessClientData(serializedData);
 
-        
+        var msg = message;
+
         PriceCalculationModel pcm = new()
         {
-            Cost = 20.00m
+            Cost = 20.00m,
+            Message = msg ?? new()
+            {
+                MessageContent = ""
+            }!
         };
 
         var serialisedCost = JsonConvert.SerializeObject(pcm);
 
         // Sends the cost back to the client
         e.Socket.SendFrame(serialisedCost); 
+    }
+
+
+    public async Task InsServer_ReceiveReady(object sender, NetMQSocketEventArgs e)
+    {
+
+        var serializedData = e.Socket.ReceiveFrameString();
+
+        Console.WriteLine($"From Client: {serializedData}\n");
+
+        if (serializedData is null)
+        {
+            ValidationMessage = "Error: client data is empty...";
+            Console.WriteLine($"{ValidationMessage}\n");
+            return;
+        }
+
+        dynamic acim = JsonConvert.DeserializeObject(serializedData)!;
+
+        message = new() // set new messagemodel to messages queue
+        {
+            Region = acim.data.region,
+            MessageContent = acim.data.message
+        };
+
+        AdminClientInstructionReceivedModel acirm = new()
+        {
+            Action = acim.action,
+            Data = acim.data
+
+        };
+
+        var acirmToReturn = JsonConvert.SerializeObject(acirm);
+
+        // Sends the cost back to the client
+        e.Socket.SendFrame(acirmToReturn);
     }
 
     public async Task ProcessClientData(string dataFromClient)
