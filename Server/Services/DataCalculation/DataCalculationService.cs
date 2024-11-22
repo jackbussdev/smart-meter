@@ -109,7 +109,7 @@ namespace Server.Services.DataCalculation
             }
             else
             {
-                ValidationMessage += $" - status code: {response.StatusCode}";
+                ValidationMessage = $"Error when retrieving electricity prices - status code: {response.StatusCode}";
                 Console.WriteLine(ValidationMessage);
                 return new ElectricityDataResponse();
             }
