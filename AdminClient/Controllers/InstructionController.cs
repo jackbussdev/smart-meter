@@ -45,7 +45,7 @@ namespace AdminClient.Controllers
                 var serializedData = JsonConvert.SerializeObject(message); // make it JSON
                 client.SendFrame(serializedData); // send the data to 0MQ Server
                 var resp = client.ReceiveFrameString(); // Await the received
-                dynamic deserialised = JsonConvert.DeserializeObject<AdminClientInstructionReceivedModel>(resp)!; // deserialise as a ACIRM
+                var deserialised = JsonConvert.DeserializeObject<AdminClientInstructionReceivedModel>(resp)!; // deserialise as a ACIRM
 
                 if (deserialised is null) // catch when not there
                 {
@@ -57,13 +57,13 @@ namespace AdminClient.Controllers
                 switch (deserialised.Action)
                 {
                     case "send_message":
-                        if(deserialised.message == msg.MessageBody)
+                        if(deserialised.Data.message == msg.MessageBody)
                         {
-                            Console.WriteLine("EQUAL");
+                            MessageBox.Show("Message sent successfully", "Operation status", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                         else
                         {
-                            Console.WriteLine("NOT EQUAL");
+                            MessageBox.Show("Message failed to send", "Operation status", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                         break;
                     case "retrieve_otp":

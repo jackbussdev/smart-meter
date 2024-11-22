@@ -9,6 +9,6 @@ namespace Server.Models.Client
     internal class AdminClientInstructionReceivedModel
     {
         public string Action { get; set; }
-        public object Data { get; set; }
+        public dynamic Data { get; set; }
     }
 }
