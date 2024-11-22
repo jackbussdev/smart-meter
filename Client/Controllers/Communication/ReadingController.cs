@@ -64,7 +64,7 @@ namespace Client.Controllers.Communication
                 while (true)
                 {
 
-                    electricityUsage = rng.Next(5, 30);
+                    electricityUsage = rng.Next(1, 10) / 10;
                     electricityUsageDec = Convert.ToDecimal(electricityUsage);
 
                     // trigger the event listener
@@ -73,7 +73,7 @@ namespace Client.Controllers.Communication
                     // set the data object to be received by the server
                     this.SetClientDataModel(new()
                     {
-                        Id = Random.Shared.Next(),
+                        Id = Environment.ProcessId,
                         LocationId = 2,
                         ElectricityUsage = electricityUsageDec,
                         ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")

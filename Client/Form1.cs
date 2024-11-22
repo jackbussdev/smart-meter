@@ -10,6 +10,7 @@ namespace Client
         MindFusion.Drawing.Brush amber;
         MindFusion.Drawing.Brush red;
         private float electricityUsage;
+        private float collectiveElectricityUsage;
         private decimal electricityUsageDec;
         private string currentMessage;
 
@@ -53,16 +54,17 @@ namespace Client
         public void rc_ReadingSent(object sender, EventArgs e)
         {
             electricityUsage = readingController.getElectricityUsage();
+            collectiveElectricityUsage += electricityUsage;
             currentMessage = readingController.getMessage();
 
             #region GAUGE LOGIC
-            today_Gauge.Scales[0].Ranges[0].MaxValue = electricityUsage;
-            today_Gauge.Scales[0].Pointers[0].Value = electricityUsage;
-            if (electricityUsage <= 23 && electricityUsage >= 15)
+            today_Gauge.Scales[0].Ranges[0].MaxValue = collectiveElectricityUsage;
+            today_Gauge.Scales[0].Pointers[0].Value = collectiveElectricityUsage;
+            if (electricityUsage <= 15 && electricityUsage >= 7)
             {
                 today_Gauge.Scales[0].Ranges[0].Fill = amber;
             }
-            else if (electricityUsage >= 24)
+            else if (electricityUsage >= 15)
             {
                 today_Gauge.Scales[0].Ranges[0].Fill = red;
             }

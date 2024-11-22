@@ -57,7 +57,7 @@
             // richTextBox1
             // 
             richTextBox1.Location = new Point(273, 294);
-            richTextBox1.Margin = new Padding(2, 2, 2, 2);
+            richTextBox1.Margin = new Padding(2);
             richTextBox1.Name = "richTextBox1";
             richTextBox1.Size = new Size(234, 73);
             richTextBox1.TabIndex = 1;
@@ -151,6 +151,7 @@
             // 
             // panel4
             // 
+            panel4.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             panel4.BackColor = Color.FromArgb(4, 136, 153);
             panel4.Controls.Add(Today_lbl);
             panel4.Location = new Point(393, 86);
@@ -171,11 +172,12 @@
             // 
             // today_Gauge
             // 
+            today_Gauge.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             today_Gauge.LicenseKey = null;
             today_Gauge.Location = new Point(514, 146);
             today_Gauge.Name = "today_Gauge";
             ovalScale1.Margin = new MindFusion.Thickness(0.075F, 0.075F, 0.075F, 0.075F, true);
-            ovalScale1.MaxValue = 30F;
+            ovalScale1.MaxValue = 10F;
             pointer1.CustomShape = null;
             pointer1.Margin = new MindFusion.Thickness(0F, 0F, 0F, 0F, true);
             pointer1.PointerHeight = new MindFusion.Gauges.Length(20F, MindFusion.Gauges.LengthType.Relative);
@@ -241,7 +243,7 @@
             Controls.Add(now_Pnl);
             Controls.Add(panel1);
             Controls.Add(richTextBox1);
-            Margin = new Padding(2, 2, 2, 2);
+            Margin = new Padding(2);
             Name = "Form1";
             Text = "Form1";
             Load += Form1_Load;
