@@ -14,7 +14,6 @@ namespace ServerUnitTests.Controller
     {
         private readonly Mock<FileFactory> _fileFactoryMock = new();
         private readonly Mock<FileRepository> _fileRepositoryMock = new();
-        private readonly Mock<HttpClient> _httpClientMock = new();
         private readonly Mock<IFileService> _fileServiceMock = new();
         private readonly Mock<IHttpService> _httpServiceMock = new();
 
