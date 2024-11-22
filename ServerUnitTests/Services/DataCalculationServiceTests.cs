@@ -4,6 +4,7 @@ using Server.Models.Client;
 using Server.Models.OctopusApi;
 using Server.Services.DataCalculation;
 using Server.Services.Http;
+using System.Net;
 
 namespace ServerUnitTests.Services
 {
@@ -133,6 +134,30 @@ namespace ServerUnitTests.Services
 
             // Assert
             actualCost.Should().Be(expectedCost);
+        }
+
+        [Fact]
+        public async Task GetStandardRatesAsync_Handles_Unsuccessful_Response()
+        {
+            // Arrange
+            string productId = "1";
+            string tariffCode = "2";
+            DateTime? periodFrom = new (2024, 03, 07);
+            DateTime periodTo = new (2024, 03, 08);
+
+            _httpServiceMock.Setup(x => x.GetAsync(It.IsAny<string>()))
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.NotFound));
+
+            var dataCalculationService = new DataCalculationService(_httpServiceMock.Object);
+
+            // Act
+            var result = await dataCalculationService.GetStandardRatesAsync(productId, tariffCode, periodFrom, periodTo);
+
+            // Assert
+            result.Should().NotBeNull(because: "All results from method will return either a populated ElectricityDataResponse result or an empty one.");
+            result.Results.Should().BeNull(because: "Results variable within ElectricityDataResponse will be null because API call was unsuccessful.");
+            dataCalculationService.ValidationMessage.Should().Be($"Error when retrieving electricity prices - status code: NotFound");
+            _httpServiceMock.Verify(x => x.GetAsync(It.IsAny<string>()), Times.Once());
         }
 
         public void Dispose()
