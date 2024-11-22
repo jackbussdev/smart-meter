@@ -33,6 +33,7 @@ public class ServerController(FileFactory fileFacotry,
     private ResponseSocket _instructionalServer = new();
 
     public string? ValidationMessage { get; set; }
+    public decimal clientCost;
 
     public async Task StartServer()
     {
@@ -108,7 +109,8 @@ public class ServerController(FileFactory fileFacotry,
 
         PriceCalculationModel pcm = new()
         {
-            Cost = 20.00m,
+
+            Cost = clientCost,
             Message = msg ?? new()
             {
                 MessageContent = ""
@@ -176,6 +178,7 @@ public class ServerController(FileFactory fileFacotry,
         }
 
         clientData.Cost = cost;
+        clientCost = cost;
 
         await ProcessClientDataToFileAsync(clientData);
     }
