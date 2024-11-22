@@ -134,7 +134,7 @@ namespace Client
 
         private void clock_Tmr_Tick(object sender, EventArgs e)
         {
-            timer_Lbl.Text = DateTime.Now.Hour.ToString() + ":" + DateTime.Now.Minute.ToString();
+            timer_Lbl.Text = DateTime.Now.ToString("HH:mm");
         }
     }
 }
