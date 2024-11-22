@@ -62,7 +62,7 @@ namespace Client.Controllers.Communication
                 while (true)
                 {
 
-                    electricityUsage = rng.Next(5, 30);
+                    electricityUsage = rng.Next(1, 10) / 10;
                     electricityUsageDec = Convert.ToDecimal(electricityUsage);
 
                     // trigger the event listener
