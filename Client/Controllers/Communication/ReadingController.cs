@@ -20,6 +20,8 @@ namespace Client.Controllers.Communication
         public float electricityUsage { get; private set; }
         public decimal electricityUsageDec { get; private set; }
 
+        public string currentStatusMessage { get; private set; }
+
         public string? ValidationMessage { get; set; }
 
         public ReadingController(RequestSocket socket)
@@ -42,6 +44,11 @@ namespace Client.Controllers.Communication
             callbackToSetBox = callback;
         }
 
+        public string getMessage()
+        {
+            return currentStatusMessage;
+        }
+
         public void SendReading()
         {
 
@@ -50,7 +57,7 @@ namespace Client.Controllers.Communication
             try
             {
                 using var client = _rs;
-                client.Connect("tcp://localhost:5556");
+                client.Connect("tcp://localhost:5556"); // TODO: domain potentially?
 
                 while (true)
                 {
@@ -58,8 +65,10 @@ namespace Client.Controllers.Communication
                     electricityUsage = rng.Next(5, 30);
                     electricityUsageDec = Convert.ToDecimal(electricityUsage);
 
+                    // trigger the event listener
                     ReadingSent.Invoke(this, EventArgs.Empty);
 
+                    // set the data object to be received by the server
                     this.SetClientDataModel(new()
                     {
                         Id = Random.Shared.Next(),
@@ -68,20 +77,23 @@ namespace Client.Controllers.Communication
                         ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")
                     });
 
-                    var serializedData = JsonConvert.SerializeObject(_clientDataModel);
-                    client.SendFrame(serializedData);
-                    var resp = client.ReceiveFrameString();
-                    var deserialised = JsonConvert.DeserializeObject<PriceCalculationModel>(resp);
+                    var serializedData = JsonConvert.SerializeObject(_clientDataModel); // make it JSON
+                    client.SendFrame(serializedData); // send the data to 0MQ Server
+                    var resp = client.ReceiveFrameString(); // Await the received
+                    var deserialised = JsonConvert.DeserializeObject<PriceCalculationModel>(resp); // deserialise as a PCM
 
-                    if (deserialised is null)
+                    if (deserialised is null) // catch when not there
                     {
                         ValidationMessage = "Error when receiving cost from server";
                         Console.WriteLine(ValidationMessage);
-                        return;
+                        return; // end loop
                     }
 
-                    string cost = deserialised.Cost.ToString();
-                    Thread.Sleep(2000);
+                    string cost = deserialised.Cost.ToString(); // this is the cost
+                    currentStatusMessage = deserialised.Message.MessageContent;
+
+                    var sleepFor = rng.Next(15, 60); // sleep for rng between 15 and 60 secs
+                    Thread.Sleep(sleepFor); // Meet criteria for assignment
                 }
             }
             catch (Exception ex)

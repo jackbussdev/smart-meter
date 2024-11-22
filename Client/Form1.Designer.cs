@@ -49,6 +49,8 @@
             Today_lbl = new Label();
             today_Gauge = new MindFusion.Gauges.WinForms.OvalGauge();
             clock_Tmr = new System.Windows.Forms.Timer(components);
+            lblMessageCentreHeading = new Label();
+            lblMsgCentreContent = new Label();
             panel1.SuspendLayout();
             now_Pnl.SuspendLayout();
             panel4.SuspendLayout();
@@ -56,10 +58,9 @@
             // 
             // button1
             // 
-            button1.Location = new Point(554, 293);
-            button1.Margin = new Padding(2);
+            button1.Location = new Point(791, 488);
             button1.Name = "button1";
-            button1.Size = new Size(148, 74);
+            button1.Size = new Size(211, 123);
             button1.TabIndex = 0;
             button1.Text = "test thar mf";
             button1.UseVisualStyleBackColor = true;
@@ -67,19 +68,17 @@
             // 
             // richTextBox1
             // 
-            richTextBox1.Location = new Point(273, 294);
-            richTextBox1.Margin = new Padding(2);
+            richTextBox1.Location = new Point(390, 490);
             richTextBox1.Name = "richTextBox1";
-            richTextBox1.Size = new Size(234, 73);
+            richTextBox1.Size = new Size(333, 119);
             richTextBox1.TabIndex = 1;
             richTextBox1.Text = "";
             // 
             // button2
             // 
-            button2.Location = new Point(89, 293);
-            button2.Margin = new Padding(2);
+            button2.Location = new Point(127, 488);
             button2.Name = "button2";
-            button2.Size = new Size(148, 74);
+            button2.Size = new Size(211, 123);
             button2.TabIndex = 2;
             button2.Text = "Mash that value";
             button2.UseVisualStyleBackColor = true;
@@ -94,9 +93,10 @@
             panel1.Controls.Add(time_Lbl);
             panel1.Controls.Add(panel3);
             panel1.Controls.Add(home_Lbl);
-            panel1.Location = new Point(0, 26);
+            panel1.Location = new Point(0, 43);
+            panel1.Margin = new Padding(4, 5, 4, 5);
             panel1.Name = "panel1";
-            panel1.Size = new Size(796, 61);
+            panel1.Size = new Size(1137, 102);
             panel1.TabIndex = 3;
             // 
             // timer_Lbl
@@ -104,9 +104,10 @@
             timer_Lbl.AutoSize = true;
             timer_Lbl.Font = new Font("Segoe UI", 10F);
             timer_Lbl.ForeColor = Color.White;
-            timer_Lbl.Location = new Point(698, 23);
+            timer_Lbl.Location = new Point(997, 38);
+            timer_Lbl.Margin = new Padding(4, 0, 4, 0);
             timer_Lbl.Name = "timer_Lbl";
-            timer_Lbl.Size = new Size(79, 19);
+            timer_Lbl.Size = new Size(115, 28);
             timer_Lbl.TabIndex = 8;
             timer_Lbl.Text = "placeholder";
             // 
@@ -115,9 +116,10 @@
             clock_Lbl.AutoSize = true;
             clock_Lbl.Font = new Font("Segoe UI", 10F);
             clock_Lbl.ForeColor = Color.White;
-            clock_Lbl.Location = new Point(702, 23);
+            clock_Lbl.Location = new Point(1003, 38);
+            clock_Lbl.Margin = new Padding(4, 0, 4, 0);
             clock_Lbl.Name = "clock_Lbl";
-            clock_Lbl.Size = new Size(0, 19);
+            clock_Lbl.Size = new Size(0, 28);
             clock_Lbl.TabIndex = 7;
             // 
             // time_Lbl
@@ -125,17 +127,19 @@
             time_Lbl.AutoSize = true;
             time_Lbl.Font = new Font("Segoe UI", 10F);
             time_Lbl.ForeColor = Color.White;
-            time_Lbl.Location = new Point(661, 23);
+            time_Lbl.Location = new Point(944, 38);
+            time_Lbl.Margin = new Padding(4, 0, 4, 0);
             time_Lbl.Name = "time_Lbl";
-            time_Lbl.Size = new Size(41, 19);
+            time_Lbl.Size = new Size(58, 28);
             time_Lbl.TabIndex = 6;
             time_Lbl.Text = "Time:";
             // 
             // panel3
             // 
-            panel3.Location = new Point(390, 60);
+            panel3.Location = new Point(557, 100);
+            panel3.Margin = new Padding(4, 5, 4, 5);
             panel3.Name = "panel3";
-            panel3.Size = new Size(403, 56);
+            panel3.Size = new Size(576, 93);
             panel3.TabIndex = 5;
             // 
             // home_Lbl
@@ -144,9 +148,10 @@
             home_Lbl.AutoSize = true;
             home_Lbl.Font = new Font("Segoe UI", 12F);
             home_Lbl.ForeColor = Color.White;
-            home_Lbl.Location = new Point(366, 20);
+            home_Lbl.Location = new Point(523, 33);
+            home_Lbl.Margin = new Padding(4, 0, 4, 0);
             home_Lbl.Name = "home_Lbl";
-            home_Lbl.Size = new Size(52, 21);
+            home_Lbl.Size = new Size(79, 32);
             home_Lbl.TabIndex = 0;
             home_Lbl.Text = "Home";
             home_Lbl.Click += label1_Click;
@@ -155,9 +160,10 @@
             // 
             now_Pnl.BackColor = Color.FromArgb(143, 183, 188);
             now_Pnl.Controls.Add(Now_lbl);
-            now_Pnl.Location = new Point(0, 86);
+            now_Pnl.Location = new Point(0, 143);
+            now_Pnl.Margin = new Padding(4, 5, 4, 5);
             now_Pnl.Name = "now_Pnl";
-            now_Pnl.Size = new Size(396, 56);
+            now_Pnl.Size = new Size(566, 93);
             now_Pnl.TabIndex = 4;
             // 
             // Now_lbl
@@ -165,9 +171,10 @@
             Now_lbl.AutoSize = true;
             Now_lbl.Font = new Font("Segoe UI", 10F);
             Now_lbl.ForeColor = Color.White;
-            Now_lbl.Location = new Point(176, 19);
+            Now_lbl.Location = new Point(251, 32);
+            Now_lbl.Margin = new Padding(4, 0, 4, 0);
             Now_lbl.Name = "Now_lbl";
-            Now_lbl.Size = new Size(37, 19);
+            Now_lbl.Size = new Size(53, 28);
             Now_lbl.TabIndex = 0;
             Now_lbl.Text = "Now";
             // 
@@ -175,9 +182,10 @@
             // 
             panel4.BackColor = Color.FromArgb(4, 136, 153);
             panel4.Controls.Add(Today_lbl);
-            panel4.Location = new Point(393, 86);
+            panel4.Location = new Point(561, 143);
+            panel4.Margin = new Padding(4, 5, 4, 5);
             panel4.Name = "panel4";
-            panel4.Size = new Size(396, 56);
+            panel4.Size = new Size(566, 93);
             panel4.TabIndex = 5;
             // 
             // Today_lbl
@@ -185,16 +193,18 @@
             Today_lbl.AutoSize = true;
             Today_lbl.Font = new Font("Segoe UI", 10F);
             Today_lbl.ForeColor = Color.White;
-            Today_lbl.Location = new Point(187, 19);
+            Today_lbl.Location = new Point(267, 32);
+            Today_lbl.Margin = new Padding(4, 0, 4, 0);
             Today_lbl.Name = "Today_lbl";
-            Today_lbl.Size = new Size(45, 19);
+            Today_lbl.Size = new Size(64, 28);
             Today_lbl.TabIndex = 0;
             Today_lbl.Text = "Today";
             // 
             // today_Gauge
             // 
             today_Gauge.LicenseKey = null;
-            today_Gauge.Location = new Point(514, 146);
+            today_Gauge.Location = new Point(734, 243);
+            today_Gauge.Margin = new Padding(4, 5, 4, 5);
             today_Gauge.Name = "today_Gauge";
             ovalScale1.Margin = new MindFusion.Thickness(0.075F, 0.075F, 0.075F, 0.075F, true);
             ovalScale1.MaxValue = 30F;
@@ -218,7 +228,7 @@
             ovalScale1.Ranges.Add(range3);
             ovalScale1.Stroke = new MindFusion.Drawing.Pen("0/#FFD3D3D3/0/0/0//0/0/10/");
             today_Gauge.Scales.Add(ovalScale1);
-            today_Gauge.Size = new Size(172, 142);
+            today_Gauge.Size = new Size(246, 237);
             today_Gauge.TabIndex = 6;
             today_Gauge.Text = "ovalGauge1";
             today_Gauge.Click += ovalGauge1_Click;
@@ -228,12 +238,34 @@
             clock_Tmr.Enabled = true;
             clock_Tmr.Tick += clock_Tmr_Tick;
             // 
+            // lblMessageCentreHeading
+            // 
+            lblMessageCentreHeading.AutoSize = true;
+            lblMessageCentreHeading.ForeColor = Color.GhostWhite;
+            lblMessageCentreHeading.Location = new Point(30, 274);
+            lblMessageCentreHeading.Name = "lblMessageCentreHeading";
+            lblMessageCentreHeading.Size = new Size(142, 25);
+            lblMessageCentreHeading.TabIndex = 7;
+            lblMessageCentreHeading.Text = "Message Centre:";
+            // 
+            // lblMsgCentreContent
+            // 
+            lblMsgCentreContent.AutoSize = true;
+            lblMsgCentreContent.ForeColor = Color.GhostWhite;
+            lblMsgCentreContent.Location = new Point(30, 308);
+            lblMsgCentreContent.Name = "lblMsgCentreContent";
+            lblMsgCentreContent.Size = new Size(180, 25);
+            lblMsgCentreContent.TabIndex = 7;
+            lblMsgCentreContent.Text = "No update to display";
+            // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(51, 51, 51);
-            ClientSize = new Size(789, 378);
+            ClientSize = new Size(1127, 630);
+            Controls.Add(lblMsgCentreContent);
+            Controls.Add(lblMessageCentreHeading);
             Controls.Add(today_Gauge);
             Controls.Add(panel4);
             Controls.Add(now_Pnl);
@@ -241,7 +273,6 @@
             Controls.Add(button2);
             Controls.Add(richTextBox1);
             Controls.Add(button1);
-            Margin = new Padding(2);
             Name = "Form1";
             Text = "Form1";
             Load += Form1_Load;
@@ -252,6 +283,7 @@
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -271,5 +303,7 @@
         private Label clock_Lbl;
         private System.Windows.Forms.Timer clock_Tmr;
         private Label timer_Lbl;
+        private Label lblMessageCentreHeading;
+        private Label lblMsgCentreContent;
     }
 }
