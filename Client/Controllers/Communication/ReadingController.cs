@@ -71,7 +71,7 @@ namespace Client.Controllers.Communication
                     // set the data object to be received by the server
                     this.SetClientDataModel(new()
                     {
-                        Id = Random.Shared.Next(),
+                        Id = Environment.ProcessId,
                         LocationId = 2,
                         ElectricityUsage = electricityUsageDec,
                         ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")
