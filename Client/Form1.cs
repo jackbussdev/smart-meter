@@ -1,6 +1,8 @@
 using Client.ServiceManager.Interfaces.Controllers.Communication;
 using System.Linq.Expressions;
 
+// https://mindfusion.eu/gauges-winforms-pack.html - Package that was used for UI Gauge Implementation.
+
 namespace Client
 {
     public partial class Form1 : Form
@@ -29,26 +31,9 @@ namespace Client
             //---------------------------------------------------------
             //---------------------------------------------------------
 
-
-            //Random rng = new Random();
-            //electricityUsage = rng.Next(5, 30);
-            //electricityUsageDec = Convert.ToDecimal(electricityUsage);
-
             green = today_Gauge.Scales[0].Ranges[0].Fill;
             amber = today_Gauge.Scales[0].Ranges[1].Fill;
             red = today_Gauge.Scales[0].Ranges[2].Fill;
-
-            //readingController.SetClientDataModel(new()
-            //{
-            //    Id = Random.Shared.Next(),
-            //    LocationId = 2,
-            //    ElectricityUsage = electricityUsageDec,
-            //    ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")
-            //});
-
-            //readingController.SendReading();
-
-
         }
 
         public void rc_ReadingSent(object sender, EventArgs e)
