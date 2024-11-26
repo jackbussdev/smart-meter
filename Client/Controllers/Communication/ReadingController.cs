@@ -65,8 +65,9 @@ namespace Client.Controllers.Communication
 
                 while (true)
                 {
-
-                    electricityUsage = rng.Next(1, 10) / 10f;
+                    // Divide the slectricity usage by 1000 to generate realistic usages
+                    // No smart meter will charge a client £3 every 30 seconds for electricity
+                    electricityUsage = rng.Next(1, 10) / 1000f;
                     electricityUsageDec = Convert.ToDecimal(electricityUsage);
 
                     // trigger the event listener
@@ -76,7 +77,7 @@ namespace Client.Controllers.Communication
                     this.SetClientDataModel(new()
                     {
                         Id = _serialNumber != 0 ? _serialNumber : Environment.ProcessId,
-                        LocationId = 2,
+                        LocationId = Random.Shared.Next(1, 10),
                         ElectricityUsage = electricityUsageDec,
                         ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")
                     });

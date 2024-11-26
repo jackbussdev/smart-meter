@@ -29,7 +29,7 @@ namespace Client
                     _serialNumber = Int32.Parse(arg);
                     break;
                 }
-                catch (Exception e)
+                catch
                 {
                     MessageBox.Show("A non-integer value was passed for the Id");
                     return;
