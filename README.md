@@ -6,10 +6,22 @@ Create a batch file `<name>.bat` with the following in:
 ```
 @echo on
 cd <directory where Client.exe is located>
-start Client.exe 626262
-start Client.exe 636363
-start Client.exe 656565
+start Client.exe 000001
+start Client.exe 000002
+start Client.exe 000003
+start Client.exe 000004
+start Client.exe 000005
+start Client.exe 000006
+start Client.exe 000007
+start Client.exe 000008
+start Client.exe 000009
+start Client.exe 0000010
+start Client.exe 0000011
+start Client.exe 0000012
+start Client.exe 0000013
+start Client.exe 0000014
+start Client.exe 0000015
 PAUSE
 ```
 
-When you execute this, it will automatically start 3 instances of the client with the following IDs: `626262`, `636363`, and `656565`.
+When you execute this, it will automatically start 15 client instances with corresponding ids
