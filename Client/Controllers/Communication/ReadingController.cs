@@ -12,6 +12,7 @@ namespace Client.Controllers.Communication
         public event EventHandler ReadingSent;
 
         private RequestSocket _rs;
+        private int _serialNumber;
         private RichTextBox _richTextBox;
         private ClientDataModel _clientDataModel;
         private Action<string> callbackToSetBox;
@@ -24,9 +25,10 @@ namespace Client.Controllers.Communication
 
         public string? ValidationMessage { get; set; }
 
-        public ReadingController(RequestSocket socket)
+        public ReadingController(RequestSocket socket, int serialNumber)
         {
             _rs = socket;
+            _serialNumber = serialNumber;
         }
 
         public float getElectricityUsage()
@@ -62,7 +64,7 @@ namespace Client.Controllers.Communication
                 while (true)
                 {
 
-                    electricityUsage = rng.Next(1, 10) / 10;
+                    electricityUsage = rng.Next(1, 10) / 10f;
                     electricityUsageDec = Convert.ToDecimal(electricityUsage);
 
                     // trigger the event listener
@@ -71,7 +73,7 @@ namespace Client.Controllers.Communication
                     // set the data object to be received by the server
                     this.SetClientDataModel(new()
                     {
-                        Id = Environment.ProcessId,
+                        Id = _serialNumber != 0 ? _serialNumber : Environment.ProcessId,
                         LocationId = 2,
                         ElectricityUsage = electricityUsageDec,
                         ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")
