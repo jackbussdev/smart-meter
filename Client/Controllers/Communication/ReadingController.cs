@@ -18,7 +18,7 @@ namespace Client.Controllers.Communication
         private RichTextBox _richTextBox;
         private ClientDataModel _clientDataModel;
         private Action<string> callbackToSetBox;
-
+        private int _locationId;
 
         public float electricityUsage { get; private set; }
         public decimal electricityUsageDec { get; private set; }
@@ -27,10 +27,11 @@ namespace Client.Controllers.Communication
 
         public string? ValidationMessage { get; set; }
 
-        public ReadingController(RequestSocket socket, int serialNumber)
+        public ReadingController(RequestSocket socket, int serialNumber, int locationId)
         {
             _rs = socket;
             _serialNumber = serialNumber;
+            _locationId = locationId;
         }
 
         public float getElectricityUsage()
@@ -58,6 +59,11 @@ namespace Client.Controllers.Communication
 
             Random rng = new();
 
+            if (_locationId == 0)
+            {
+                throw new InvalidOperationException("Cannot determin location of client");
+            }
+
             try
             {
                 using var client = _rs;
@@ -77,7 +83,7 @@ namespace Client.Controllers.Communication
                     this.SetClientDataModel(new()
                     {
                         Id = _serialNumber != 0 ? _serialNumber : Environment.ProcessId,
-                        LocationId = Random.Shared.Next(1, 10),
+                        LocationId = _locationId,
                         ElectricityUsage = electricityUsageDec,
                         ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")
                     });
