@@ -4,6 +4,8 @@ using Client.Models.Communication;
 using Newtonsoft.Json;
 using Client.ServiceManager.Interfaces.Controllers.Communication;
 using Client.Models;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace Client.Controllers.Communication
 {
@@ -54,7 +56,7 @@ namespace Client.Controllers.Communication
         public void SendReading()
         {
 
-            Random rng = new Random();
+            Random rng = new();
 
             try
             {
@@ -63,8 +65,9 @@ namespace Client.Controllers.Communication
 
                 while (true)
                 {
-
-                    electricityUsage = rng.Next(1, 10) / 10f;
+                    // Divide the slectricity usage by 1000 to generate realistic usages
+                    // No smart meter will charge a client £3 every 30 seconds for electricity
+                    electricityUsage = rng.Next(1, 10) / 1000f;
                     electricityUsageDec = Convert.ToDecimal(electricityUsage);
 
                     // trigger the event listener
@@ -74,13 +77,14 @@ namespace Client.Controllers.Communication
                     this.SetClientDataModel(new()
                     {
                         Id = _serialNumber != 0 ? _serialNumber : Environment.ProcessId,
-                        LocationId = 2,
+                        LocationId = Random.Shared.Next(1, 10),
                         ElectricityUsage = electricityUsageDec,
                         ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")
                     });
 
-                    var serializedData = JsonConvert.SerializeObject(_clientDataModel); // make it JSON
-                    client.SendFrame(serializedData); // send the data to 0MQ Server
+                    var serialisedData = JsonConvert.SerializeObject(_clientDataModel); // make it JSON
+                    client.SendFrame(serialisedData); // send the data to 0MQ 
+
                     var resp = client.ReceiveFrameString(); // Await the received
                     var deserialised = JsonConvert.DeserializeObject<PriceCalculationModel>(resp); // deserialise as a PCM
 
@@ -96,7 +100,6 @@ namespace Client.Controllers.Communication
 
                     var sleepFor = rng.Next(15, 60) * 1000; // sleep for rng between 15 and 60 secs
                     Thread.Sleep(sleepFor); // Meet criteria for assignment
-
                 }
             }
             catch (Exception ex)
