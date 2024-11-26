@@ -29,11 +29,21 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            MindFusion.Gauges.OvalScale ovalScale1 = new MindFusion.Gauges.OvalScale();
-            MindFusion.Gauges.Pointer pointer1 = new MindFusion.Gauges.Pointer();
-            MindFusion.Gauges.Range range1 = new MindFusion.Gauges.Range();
-            MindFusion.Gauges.Range range2 = new MindFusion.Gauges.Range();
-            MindFusion.Gauges.Range range3 = new MindFusion.Gauges.Range();
+            MindFusion.Gauges.OvalScale ovalScale3 = new MindFusion.Gauges.OvalScale();
+            MindFusion.Gauges.MajorTickSettings majorTickSettings3 = new MindFusion.Gauges.MajorTickSettings();
+            MindFusion.Gauges.Pointer pointer3 = new MindFusion.Gauges.Pointer();
+            MindFusion.Gauges.Range range7 = new MindFusion.Gauges.Range();
+            MindFusion.Gauges.Range range8 = new MindFusion.Gauges.Range();
+            MindFusion.Gauges.Range range9 = new MindFusion.Gauges.Range();
+            MindFusion.Gauges.OvalScale ovalScale4 = new MindFusion.Gauges.OvalScale();
+            MindFusion.Gauges.MajorTickSettings majorTickSettings4 = new MindFusion.Gauges.MajorTickSettings();
+            MindFusion.Gauges.MiddleTickSettings middleTickSettings2 = new MindFusion.Gauges.MiddleTickSettings();
+            MindFusion.Gauges.MinorTickSettings minorTickSettings2 = new MindFusion.Gauges.MinorTickSettings();
+            MindFusion.Gauges.Pointer pointer4 = new MindFusion.Gauges.Pointer();
+            MindFusion.Gauges.Range range10 = new MindFusion.Gauges.Range();
+            MindFusion.Gauges.Range range11 = new MindFusion.Gauges.Range();
+            MindFusion.Gauges.Range range12 = new MindFusion.Gauges.Range();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             richTextBox1 = new RichTextBox();
             panel1 = new Panel();
             timer_Lbl = new Label();
@@ -49,6 +59,9 @@
             clock_Tmr = new System.Windows.Forms.Timer(components);
             lblMessageCentreHeading = new Label();
             lblMsgCentreContent = new Label();
+            now_Gauge = new MindFusion.Gauges.WinForms.OvalGauge();
+            nowLbl = new Label();
+            todayLbl = new Label();
             panel1.SuspendLayout();
             now_Pnl.SuspendLayout();
             panel4.SuspendLayout();
@@ -56,12 +69,15 @@
             // 
             // richTextBox1
             // 
-            richTextBox1.Location = new Point(273, 294);
+            richTextBox1.Enabled = false;
+            richTextBox1.HideSelection = false;
+            richTextBox1.Location = new Point(559, 427);
             richTextBox1.Margin = new Padding(2);
             richTextBox1.Name = "richTextBox1";
             richTextBox1.Size = new Size(234, 73);
             richTextBox1.TabIndex = 1;
             richTextBox1.Text = "";
+            richTextBox1.Visible = false;
             // 
             // panel1
             // 
@@ -82,7 +98,7 @@
             timer_Lbl.AutoSize = true;
             timer_Lbl.Font = new Font("Segoe UI", 10F);
             timer_Lbl.ForeColor = Color.White;
-            timer_Lbl.Location = new Point(698, 23);
+            timer_Lbl.Location = new Point(698, 22);
             timer_Lbl.Name = "timer_Lbl";
             timer_Lbl.Size = new Size(79, 19);
             timer_Lbl.TabIndex = 8;
@@ -103,7 +119,7 @@
             time_Lbl.AutoSize = true;
             time_Lbl.Font = new Font("Segoe UI", 10F);
             time_Lbl.ForeColor = Color.White;
-            time_Lbl.Location = new Point(661, 23);
+            time_Lbl.Location = new Point(661, 22);
             time_Lbl.Name = "time_Lbl";
             time_Lbl.Size = new Size(41, 19);
             time_Lbl.TabIndex = 6;
@@ -120,11 +136,11 @@
             // 
             home_Lbl.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             home_Lbl.AutoSize = true;
-            home_Lbl.Font = new Font("Segoe UI", 12F);
+            home_Lbl.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             home_Lbl.ForeColor = Color.White;
             home_Lbl.Location = new Point(366, 20);
             home_Lbl.Name = "home_Lbl";
-            home_Lbl.Size = new Size(52, 21);
+            home_Lbl.Size = new Size(56, 21);
             home_Lbl.TabIndex = 0;
             home_Lbl.Text = "Home";
             home_Lbl.Click += label1_Click;
@@ -176,28 +192,36 @@
             today_Gauge.LicenseKey = null;
             today_Gauge.Location = new Point(514, 146);
             today_Gauge.Name = "today_Gauge";
-            ovalScale1.Margin = new MindFusion.Thickness(0.075F, 0.075F, 0.075F, 0.075F, true);
-            ovalScale1.MaxValue = 10F;
-            pointer1.CustomShape = null;
-            pointer1.Margin = new MindFusion.Thickness(0F, 0F, 0F, 0F, true);
-            pointer1.PointerHeight = new MindFusion.Gauges.Length(20F, MindFusion.Gauges.LengthType.Relative);
-            pointer1.PointerWidth = new MindFusion.Gauges.Length(80F, MindFusion.Gauges.LengthType.Relative);
-            pointer1.Shape = MindFusion.Gauges.PointerShape.Needle;
-            pointer1.Value = 23F;
-            ovalScale1.Pointers.Add(pointer1);
-            range1.Fill = new MindFusion.Drawing.SolidBrush("#FF54B302");
-            range1.Margin = new MindFusion.Thickness(0F, 0F, 0F, 0F, true);
-            range1.MaxValue = 23F;
-            range1.Stroke = new MindFusion.Drawing.Pen("0/#FF000000/0/0/0//0/0/10/");
-            range2.Fill = new MindFusion.Drawing.SolidBrush("#FFFFBF00");
-            range2.Margin = new MindFusion.Thickness(0F, 0F, 0F, 0F, true);
-            range3.Fill = new MindFusion.Drawing.SolidBrush("#FFCC0606");
-            range3.Margin = new MindFusion.Thickness(0F, 0F, 0F, 0F, true);
-            ovalScale1.Ranges.Add(range1);
-            ovalScale1.Ranges.Add(range2);
-            ovalScale1.Ranges.Add(range3);
-            ovalScale1.Stroke = new MindFusion.Drawing.Pen("0/#FFD3D3D3/0/0/0//0/0/10/");
-            today_Gauge.Scales.Add(ovalScale1);
+            majorTickSettings3.Count = 0;
+            ovalScale3.MajorTickSettings = majorTickSettings3;
+            ovalScale3.Margin = new MindFusion.Thickness(0.075F, 0.075F, 0.075F, 0.075F, true);
+            ovalScale3.MaxValue = 10F;
+            pointer3.CustomShape = null;
+            pointer3.Margin = new MindFusion.Thickness(0F, 0F, 0F, 0F, true);
+            pointer3.PointerHeight = new MindFusion.Gauges.Length(20F, MindFusion.Gauges.LengthType.Relative);
+            pointer3.PointerWidth = new MindFusion.Gauges.Length(80F, MindFusion.Gauges.LengthType.Relative);
+            pointer3.Shape = MindFusion.Gauges.PointerShape.Needle;
+            pointer3.Value = 23F;
+            ovalScale3.Pointers.Add(pointer3);
+            range7.EndWidth = new MindFusion.Gauges.Length(10F);
+            range7.Fill = new MindFusion.Drawing.SolidBrush("#FF54B302");
+            range7.Margin = new MindFusion.Thickness(0F, 0F, 0F, 0F, true);
+            range7.MaxValue = 23F;
+            range7.StartWidth = new MindFusion.Gauges.Length(10F);
+            range7.Stroke = new MindFusion.Drawing.Pen("0/#FF000000/0/0/0//0/0/10/");
+            range8.EndWidth = new MindFusion.Gauges.Length(10F);
+            range8.Fill = new MindFusion.Drawing.SolidBrush("#FFFFBF00");
+            range8.Margin = new MindFusion.Thickness(0F, 0F, 0F, 0F, true);
+            range8.StartWidth = new MindFusion.Gauges.Length(10F);
+            range9.EndWidth = new MindFusion.Gauges.Length(10F);
+            range9.Fill = new MindFusion.Drawing.SolidBrush("#FFCC0606");
+            range9.Margin = new MindFusion.Thickness(0F, 0F, 0F, 0F, true);
+            range9.StartWidth = new MindFusion.Gauges.Length(10F);
+            ovalScale3.Ranges.Add(range7);
+            ovalScale3.Ranges.Add(range8);
+            ovalScale3.Ranges.Add(range9);
+            ovalScale3.Stroke = new MindFusion.Drawing.Pen("0/#FFD3D3D3/0/0/0//0/0/10/");
+            today_Gauge.Scales.Add(ovalScale3);
             today_Gauge.Size = new Size(172, 142);
             today_Gauge.TabIndex = 6;
             today_Gauge.Text = "ovalGauge1";
@@ -212,7 +236,7 @@
             // 
             lblMessageCentreHeading.AutoSize = true;
             lblMessageCentreHeading.ForeColor = Color.GhostWhite;
-            lblMessageCentreHeading.Location = new Point(21, 164);
+            lblMessageCentreHeading.Location = new Point(351, 349);
             lblMessageCentreHeading.Margin = new Padding(2, 0, 2, 0);
             lblMessageCentreHeading.Name = "lblMessageCentreHeading";
             lblMessageCentreHeading.Size = new Size(94, 15);
@@ -223,19 +247,90 @@
             // 
             lblMsgCentreContent.AutoSize = true;
             lblMsgCentreContent.ForeColor = Color.GhostWhite;
-            lblMsgCentreContent.Location = new Point(21, 185);
+            lblMsgCentreContent.Location = new Point(339, 364);
             lblMsgCentreContent.Margin = new Padding(2, 0, 2, 0);
             lblMsgCentreContent.Name = "lblMsgCentreContent";
             lblMsgCentreContent.Size = new Size(117, 15);
             lblMsgCentreContent.TabIndex = 7;
             lblMsgCentreContent.Text = "No update to display";
             // 
+            // now_Gauge
+            // 
+            now_Gauge.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            now_Gauge.LicenseKey = null;
+            now_Gauge.Location = new Point(107, 146);
+            now_Gauge.Name = "now_Gauge";
+            majorTickSettings4.Count = 0;
+            ovalScale4.MajorTickSettings = majorTickSettings4;
+            ovalScale4.Margin = new MindFusion.Thickness(0.075F, 0.075F, 0.075F, 0.075F, true);
+            ovalScale4.MaxValue = 0.0035F;
+            middleTickSettings2.Count = 0;
+            ovalScale4.MiddleTickSettings = middleTickSettings2;
+            minorTickSettings2.Count = 0;
+            ovalScale4.MinorTickSettings = minorTickSettings2;
+            pointer4.CustomShape = null;
+            pointer4.Margin = new MindFusion.Thickness(0F, 0F, 0F, 0F, true);
+            pointer4.PointerHeight = new MindFusion.Gauges.Length(20F, MindFusion.Gauges.LengthType.Relative);
+            pointer4.PointerWidth = new MindFusion.Gauges.Length(80F, MindFusion.Gauges.LengthType.Relative);
+            pointer4.Shape = MindFusion.Gauges.PointerShape.Needle;
+            pointer4.Value = 23F;
+            ovalScale4.Pointers.Add(pointer4);
+            range10.EndWidth = new MindFusion.Gauges.Length(10F);
+            range10.Fill = new MindFusion.Drawing.SolidBrush("#FF54B302");
+            range10.Margin = new MindFusion.Thickness(0F, 0F, 0F, 0F, true);
+            range10.MaxValue = 23F;
+            range10.StartWidth = new MindFusion.Gauges.Length(10F);
+            range10.Stroke = new MindFusion.Drawing.Pen("0/#FF000000/0/0/0//0/0/10/");
+            range11.EndWidth = new MindFusion.Gauges.Length(10F);
+            range11.Fill = new MindFusion.Drawing.SolidBrush("#FFFFBF00");
+            range11.Margin = new MindFusion.Thickness(0F, 0F, 0F, 0F, true);
+            range11.StartWidth = new MindFusion.Gauges.Length(10F);
+            range12.EndWidth = new MindFusion.Gauges.Length(10F);
+            range12.Fill = new MindFusion.Drawing.SolidBrush("#FFCC0606");
+            range12.Margin = new MindFusion.Thickness(0F, 0F, 0F, 0F, true);
+            range12.StartWidth = new MindFusion.Gauges.Length(10F);
+            ovalScale4.Ranges.Add(range10);
+            ovalScale4.Ranges.Add(range11);
+            ovalScale4.Ranges.Add(range12);
+            ovalScale4.ScaleRelativeCenter = (PointF)resources.GetObject("ovalScale4.ScaleRelativeCenter");
+            now_Gauge.Scales.Add(ovalScale4);
+            now_Gauge.Size = new Size(172, 142);
+            now_Gauge.TabIndex = 8;
+            now_Gauge.Text = "ovalGauge1";
+            // 
+            // nowLbl
+            // 
+            nowLbl.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            nowLbl.ForeColor = Color.White;
+            nowLbl.Location = new Point(81, 291);
+            nowLbl.Name = "nowLbl";
+            nowLbl.Size = new Size(238, 21);
+            nowLbl.TabIndex = 9;
+            nowLbl.Text = "0.0001kW/h";
+            nowLbl.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // todayLbl
+            // 
+            todayLbl.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            todayLbl.ForeColor = Color.White;
+            todayLbl.ImageAlign = ContentAlignment.TopLeft;
+            todayLbl.Location = new Point(501, 291);
+            todayLbl.Margin = new Padding(0);
+            todayLbl.Name = "todayLbl";
+            todayLbl.Size = new Size(201, 21);
+            todayLbl.TabIndex = 10;
+            todayLbl.Text = "0.0001kW/h";
+            todayLbl.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(51, 51, 51);
-            ClientSize = new Size(789, 378);
+            ClientSize = new Size(789, 483);
+            Controls.Add(todayLbl);
+            Controls.Add(nowLbl);
+            Controls.Add(now_Gauge);
             Controls.Add(lblMsgCentreContent);
             Controls.Add(lblMessageCentreHeading);
             Controls.Add(today_Gauge);
@@ -244,8 +339,12 @@
             Controls.Add(panel1);
             Controls.Add(richTextBox1);
             Margin = new Padding(2);
+            MaximizeBox = false;
+            MaximumSize = new Size(805, 522);
+            MinimumSize = new Size(805, 522);
             Name = "Form1";
-            Text = "Form1";
+            SizeGripStyle = SizeGripStyle.Hide;
+            Text = "Smart Electric Meter (Client)";
             Load += Form1_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
@@ -273,5 +372,8 @@
         private Label timer_Lbl;
         private Label lblMessageCentreHeading;
         private Label lblMsgCentreContent;
+        private MindFusion.Gauges.WinForms.OvalGauge now_Gauge;
+        private Label nowLbl;
+        private Label todayLbl;
     }
 }

@@ -67,7 +67,7 @@ namespace Client.Controllers.Communication
                 {
                     // Divide the slectricity usage by 1000 to generate realistic usages
                     // No smart meter will charge a client £3 every 30 seconds for electricity
-                    electricityUsage = rng.Next(1, 10) / 1000f;
+                    electricityUsage = rng.Next(10, 350) / 100000f;
                     electricityUsageDec = Convert.ToDecimal(electricityUsage);
 
                     // trigger the event listener
