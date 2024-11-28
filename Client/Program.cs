@@ -10,6 +10,7 @@ namespace Client
     {
         private static readonly RequestSocket rs = new("tcp://localhost:5556");
         private static int _serialNumber = 0;
+        private static int _locationId = 0;
         private static IServiceProvider _serviceProvider { get; set; }
 
         /// <summary>
@@ -21,20 +22,24 @@ namespace Client
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
 
-            foreach (var arg in args)
+            // Validate and assign arguments (improved version)
+            if (args.Length < 2)
             {
-                try
-                {
-
-                    _serialNumber = Int32.Parse(arg);
-                    break;
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show("A non-integer value was passed for the Id");
-                    return;
-                }
+                MessageBox.Show("Please provide both Client ID and Location ID arguments!");
+                return;
             }
+
+            try
+            {
+                _serialNumber = Int32.Parse(args[0]);
+                _locationId = Int32.Parse(args[1]);
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Invalid format for Client ID or Location ID!");
+                return;
+            }
+
             ApplicationConfiguration.Initialize();
             var host = CreateHostBuilder().Build();
             _serviceProvider = host.Services;
@@ -46,7 +51,7 @@ namespace Client
             return Host.CreateDefaultBuilder().ConfigureServices((context, services) =>
             {
                 services.AddSingleton<IReadingController, ReadingController>(
-                    serviceProvider => new ReadingController(rs, _serialNumber));
+                    serviceProvider => new ReadingController(rs, _serialNumber, _locationId));
                 services.AddSingleton<IMessageController, MessageController>();
                 services.AddTransient<Form1>();
             });

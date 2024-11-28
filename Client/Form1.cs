@@ -1,5 +1,8 @@
+using Client.Models.Communication;
 using Client.ServiceManager.Interfaces.Controllers.Communication;
 using System.Linq.Expressions;
+
+// https://mindfusion.eu/gauges-winforms-pack.html - Package that was used for UI Gauge Implementation.
 
 namespace Client
 {
@@ -9,6 +12,7 @@ namespace Client
         MindFusion.Drawing.Brush green;
         MindFusion.Drawing.Brush amber;
         MindFusion.Drawing.Brush red;
+
         private float electricityUsage;
         private float collectiveElectricityUsage;
         private decimal electricityUsageDec;
@@ -29,26 +33,9 @@ namespace Client
             //---------------------------------------------------------
             //---------------------------------------------------------
 
-
-            //Random rng = new Random();
-            //electricityUsage = rng.Next(5, 30);
-            //electricityUsageDec = Convert.ToDecimal(electricityUsage);
-
             green = today_Gauge.Scales[0].Ranges[0].Fill;
             amber = today_Gauge.Scales[0].Ranges[1].Fill;
             red = today_Gauge.Scales[0].Ranges[2].Fill;
-
-            //readingController.SetClientDataModel(new()
-            //{
-            //    Id = Random.Shared.Next(),
-            //    LocationId = 2,
-            //    ElectricityUsage = electricityUsageDec,
-            //    ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")
-            //});
-
-            //readingController.SendReading();
-
-
         }
 
         public void rc_ReadingSent(object sender, EventArgs e)
@@ -57,20 +44,39 @@ namespace Client
             collectiveElectricityUsage += electricityUsage;
             currentMessage = readingController.getMessage();
 
-            #region GAUGE LOGIC
+            #region TODAY GAUGE LOGIC
             today_Gauge.Scales[0].Ranges[0].MaxValue = collectiveElectricityUsage;
             today_Gauge.Scales[0].Pointers[0].Value = collectiveElectricityUsage;
-            if (electricityUsage <= 15 && electricityUsage >= 7)
+            todayLbl.Text = collectiveElectricityUsage + "kW/h";
+            if (collectiveElectricityUsage <= 6.9 && collectiveElectricityUsage >= 4.5)
             {
                 today_Gauge.Scales[0].Ranges[0].Fill = amber;
             }
-            else if (electricityUsage >= 15)
+            else if (collectiveElectricityUsage >= 7)
             {
                 today_Gauge.Scales[0].Ranges[0].Fill = red;
             }
             else
             {
                 today_Gauge.Scales[0].Ranges[0].Fill = green;
+            }
+            #endregion
+
+            #region NOW GAUGE LOGIC
+            now_Gauge.Scales[0].Ranges[0].MaxValue = electricityUsage;
+            now_Gauge.Scales[0].Pointers[0].Value = electricityUsage;
+            nowLbl.Text = electricityUsage + "kW/h";
+            if (electricityUsage <= 0.00280 && electricityUsage >= 0.00156)  
+            {
+                now_Gauge.Scales[0].Ranges[0].Fill = amber;
+            }
+            else if (electricityUsage >= 0.00281)
+            {
+                now_Gauge.Scales[0].Ranges[0].Fill = red;
+            }
+            else
+            {
+                now_Gauge.Scales[0].Ranges[0].Fill = green;
             }
             #endregion
 
@@ -97,7 +103,7 @@ namespace Client
         {
             // Allow cross threading calls to manipulate the richtextbox
             RichTextBox.CheckForIllegalCrossThreadCalls = false;
-            
+
             // set listener function for when the reading is sent
             readingController.ReadingSent += rc_ReadingSent!;
 
@@ -137,6 +143,11 @@ namespace Client
         private void clock_Tmr_Tick(object sender, EventArgs e)
         {
             timer_Lbl.Text = DateTime.Now.ToString("HH:mm");
+        }
+
+        private void todayLbl_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
