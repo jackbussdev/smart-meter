@@ -6,6 +6,8 @@ using Server.Models;
 using Server.Models.Client;
 using Server.Repositories.File;
 using Server.Services.DataCalculation;
+using System.Security.Cryptography;
+using System.Text;
 
 // https://zeromq.org/languages/csharp/ - Tought the basics of how to allow communication between clients 
 // and servers using ZeroMQ in C#
@@ -92,18 +94,42 @@ public class ServerController(FileFactory fileFacotry,
     public async Task Server_ReceiveReady(object sender, NetMQSocketEventArgs e)
     {
 
-        var serializedData = e.Socket.ReceiveFrameString();
+        byte[] recvMsg = e.Socket.ReceiveFrameBytes();
 
-        Console.WriteLine($"From Client: {serializedData}\n");
+        int lengthOfPayload = recvMsg.Length - 32;
+        byte[] payload = new byte[lengthOfPayload];
+        byte[] hash = new byte[32];
 
-        if (serializedData is null)
+        Array.Copy(recvMsg, 0, payload, 0, lengthOfPayload);
+        Array.Copy(recvMsg, lengthOfPayload, hash, 0, 32);
+
+        using (SHA256 sha = SHA256.Create())
         {
-            ValidationMessage = "Error: client data is empty...";
-            Console.WriteLine($"{ValidationMessage}\n");
-            return;
-        }
 
-        await ProcessClientData(serializedData);
+            string serializedData = Encoding.UTF8.GetString(payload);
+
+            byte[] serializedDataBytes = Encoding.UTF8.GetBytes(serializedData);
+
+            byte[] computedHash = sha.ComputeHash(serializedDataBytes);
+
+            if (DoHashesMatch(computedHash, hash))
+            {
+                Console.WriteLine($"\x1b[92m [Hashes Match!] \x1b[39m From Client: {serializedData}\n");
+
+                if (serializedData is null)
+                {
+                    ValidationMessage = "Error: client data is empty...";
+                    Console.WriteLine($"{ValidationMessage}\n");
+                    return;
+                }
+
+                await ProcessClientData(serializedData);
+            }
+            else
+            {
+                Console.WriteLine("Error: Hashes do not match!");
+            }
+        }
 
         var msg = message;
 
@@ -188,5 +214,19 @@ public class ServerController(FileFactory fileFacotry,
         var fileService = _fileFactory.CreateFileService(clientData!.Id, _fileRepository);
 
         await fileService.WriteDataAsync(clientData);
+    }
+
+    protected static bool DoHashesMatch(byte[] hash1, byte[] hash2)
+    {
+        if(hash1.Length != hash2.Length)
+        {
+            return false; // hashes not equal, reject
+        }
+
+        for (var i = 0; i < hash1.Length; i++)
+        {
+            if (hash1[i] != hash2[i]) return false;
+        }
+        return true;
     }
 }
