@@ -127,7 +127,9 @@ public class ServerController(FileFactory fileFacotry,
             }
             else
             {
-                Console.WriteLine("Error: Hashes do not match!");
+                ValidationMessage = "Error: hashes do not match...";
+                Console.WriteLine($"{ValidationMessage}\n");
+                return;
             }
         }
 
@@ -216,7 +218,7 @@ public class ServerController(FileFactory fileFacotry,
         await fileService.WriteDataAsync(clientData);
     }
 
-    protected static bool DoHashesMatch(byte[] hash1, byte[] hash2)
+    public bool DoHashesMatch(byte[] hash1, byte[] hash2)
     {
         if(hash1.Length != hash2.Length)
         {
