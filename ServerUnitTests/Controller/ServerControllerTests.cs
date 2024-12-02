@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Moq;
+using Newtonsoft.Json;
 using Server.Controller.Server;
 using Server.Factories;
 using Server.Models.Client;
@@ -7,6 +8,10 @@ using Server.Repositories.File;
 using Server.Services.DataCalculation;
 using Server.Services.File;
 using Server.Services.Http;
+using System.Runtime.ExceptionServices;
+using System.Runtime.Intrinsics.Arm;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace ServerUnitTests.Controller
 {
@@ -140,6 +145,90 @@ namespace ServerUnitTests.Controller
             // Assert
             _fileFactoryMock.Verify(x => x.CreateFileService(It.IsAny<int>(), It.IsAny<FileRepository>()), Times.Once);
             _fileServiceMock.Verify(x => x.WriteDataAsync(It.IsAny<ClientDataModel>()), Times.Once);
+        }
+
+        [Fact]
+        public void Process_Client_Data_With_Hashes_Matching()
+        {
+            // Arrange
+            var dataCalculationServiceMock = new DataCalculationService(_httpServiceMock.Object);
+            var controller = new ServerController(_fileFactoryMock.Object, _fileRepositoryMock.Object, dataCalculationServiceMock);
+
+            var first = new ClientDataModel
+            {
+                Id = 1,
+                LocationId = 2,
+                ElectricityUsage = 3,
+                ConnectionDateAndTime = "2024-10-02"
+            };
+
+            var second = first;
+
+            string firstSerialised = JsonConvert.SerializeObject(first);
+            string secondSerialised = JsonConvert.SerializeObject(second);
+
+            byte[] firstSerialisedBytes = Encoding.UTF8.GetBytes(firstSerialised);
+            byte[] secondSerialisedBytes = Encoding.UTF8.GetBytes(secondSerialised);
+
+            byte[] firstHash;
+            byte[] secondHash;
+
+            using(SHA256 sha = SHA256.Create())
+            {
+                firstHash = sha.ComputeHash(firstSerialisedBytes);
+                secondHash = sha.ComputeHash(secondSerialisedBytes);
+            }
+
+            // Act
+            bool result = controller.DoHashesMatch(firstHash, secondHash);
+
+            // Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void Process_Client_Data_With_Hashes_Not_Matching()
+        {
+            // Arrange
+            var dataCalculationServiceMock = new DataCalculationService(_httpServiceMock.Object);
+            var controller = new ServerController(_fileFactoryMock.Object, _fileRepositoryMock.Object, dataCalculationServiceMock);
+
+            var first = new ClientDataModel
+            {
+                Id = 1,
+                LocationId = 2,
+                ElectricityUsage = 3,
+                ConnectionDateAndTime = "2024-10-02"
+            };
+
+            var second = new ClientDataModel
+            {
+                Id = 2,
+                LocationId = 3,
+                ElectricityUsage = 4,
+                ConnectionDateAndTime = "2023-02-10"
+            };
+
+            string firstSerialised = JsonConvert.SerializeObject(first);
+            string secondSerialised = JsonConvert.SerializeObject(second);
+
+            byte[] firstSerialisedBytes = Encoding.UTF8.GetBytes(firstSerialised);
+            byte[] secondSerialisedBytes = Encoding.UTF8.GetBytes(secondSerialised);
+
+            byte[] firstHash;
+            byte[] secondHash;
+
+            using (SHA256 sha = SHA256.Create())
+            {
+                firstHash = sha.ComputeHash(firstSerialisedBytes);
+                secondHash = sha.ComputeHash(secondSerialisedBytes);
+            }
+
+            // Act
+            bool result = controller.DoHashesMatch(firstHash, secondHash);
+
+            // Assert
+            Assert.False(result);
         }
 
         public void Dispose()

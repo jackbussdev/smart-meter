@@ -76,8 +76,6 @@ namespace Client.Controllers.Communication
                     electricityUsage = rng.Next(10, 350) / 100000f;
                     electricityUsageDec = Convert.ToDecimal(electricityUsage);
 
-                    // trigger the event listener
-                    ReadingSent.Invoke(this, EventArgs.Empty);
 
                     // set the data object to be received by the server
                     this.SetClientDataModel(new()
@@ -88,9 +86,23 @@ namespace Client.Controllers.Communication
                         ConnectionDateAndTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ")
                     });
 
-                    var serialisedData = JsonConvert.SerializeObject(_clientDataModel); // make it JSON
-                    client.SendFrame(serialisedData); // send the data to 0MQ 
+                    //serialise it to JSON form
+                    string serializedData = JsonConvert.SerializeObject(_clientDataModel);
+                    byte[] thePayload = Encoding.UTF8.GetBytes(serializedData);
 
+                    using (SHA256 sha = SHA256.Create())
+                    {
+                        byte[] hash = sha.ComputeHash(thePayload);
+
+                        // put both the msg and hash for cdm in same payload
+                        byte[] msg = new byte[thePayload.Length + hash.Length];
+                        Array.Copy(thePayload, 0, msg, 0, thePayload.Length);
+                        Array.Copy(hash, 0, msg, thePayload.Length, hash.Length);
+
+                        client.SendFrame(msg); // send to 0MQ
+                    }
+
+                        
                     var resp = client.ReceiveFrameString(); // Await the received
                     var deserialised = JsonConvert.DeserializeObject<PriceCalculationModel>(resp); // deserialise as a PCM
 
@@ -103,6 +115,9 @@ namespace Client.Controllers.Communication
 
                     string cost = deserialised.Cost.ToString(); // this is the cost
                     currentStatusMessage = deserialised.Message.MessageContent;
+
+                    // trigger the event listener to update FE elements
+                    ReadingSent.Invoke(this, EventArgs.Empty);
 
                     var sleepFor = rng.Next(15, 60) * 1000; // sleep for rng between 15 and 60 secs
                     Thread.Sleep(sleepFor); // Meet criteria for assignment
